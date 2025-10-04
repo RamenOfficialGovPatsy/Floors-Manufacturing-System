@@ -1,0 +1,154 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Master_Floor_Project.Views.PartnersView"
+             Width="1200" Height="700">
+    
+    <Border Classes="main-bg">
+        <StackPanel Margin="40" Spacing="20">
+            
+            <!-- Заголовок и кнопка НАЗАД -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <!-- Кнопка НАЗАД -->
+                <Button Grid.Column="0" 
+                        Content="НАЗАД"
+                        FontFamily="Segoe UI"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Background="#F4E8D3"
+                        Foreground="#333333"
+                        BorderThickness="0"
+                        Padding="20,10"
+                        CornerRadius="4"
+                        Click="BackButton_Click"/>
+                
+                <!-- Заголовок по центру -->
+                <TextBlock Grid.Column="1" 
+                           Text="ПАРТНЕРЫ"
+                           FontFamily="Segoe UI"
+                           FontSize="28"
+                           FontWeight="Bold"
+                           Foreground="#333333"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+            </Grid>
+            
+            <!-- Таблица партнеров -->
+            <Border BorderThickness="1" BorderBrush="#DDDDDD" CornerRadius="4">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/> <!-- Заголовки -->
+                        <RowDefinition Height="*"/>    <!-- Данные -->
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Заголовки таблицы -->
+                    <Border Grid.Row="0" Background="#F5F5F5" BorderThickness="0,0,0,1" BorderBrush="#DDDDDD">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Grid.Column="0" Text="НАИМЕНОВАНИЕ" FontWeight="Bold" Padding="12,8"/>
+                            <TextBlock Grid.Column="1" Text="ИНН" FontWeight="Bold" Padding="12,8"/>
+                            <TextBlock Grid.Column="2" Text="ФИО ДИРЕКТОРА" FontWeight="Bold" Padding="12,8"/>
+                            <TextBlock Grid.Column="3" Text="ТЕЛЕФОН" FontWeight="Bold" Padding="12,8"/>
+                            <TextBlock Grid.Column="4" Text="EMAIL" FontWeight="Bold" Padding="12,8"/>
+                        </Grid>
+                    </Border>
+                    
+                    <!-- Данные таблицы (заглушки) -->
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            
+                            <!-- Строка 1 -->
+                            <Border BorderThickness="0,0,0,1" BorderBrush="#F0F0F0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="1.5*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBlock Grid.Column="0" Text='ООО "Вектор"' Padding="12,10"/>
+                                    <TextBlock Grid.Column="1" Text="123456789" Padding="12,10"/>
+                                    <TextBlock Grid.Column="2" Text="Иванов И.И." Padding="12,10"/>
+                                    <TextBlock Grid.Column="3" Text="+7999123456" Padding="12,10"/>
+                                    <TextBlock Grid.Column="4" Text="vector@mail.ru" Padding="12,10"/>
+                                </Grid>
+                            </Border>
+                            
+                            <!-- Строка 2 -->
+                            <Border BorderThickness="0,0,0,1" BorderBrush="#F0F0F0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="1.5*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBlock Grid.Column="0" Text='ООО "Стройка"' Padding="12,10"/>
+                                    <TextBlock Grid.Column="1" Text="987654321" Padding="12,10"/>
+                                    <TextBlock Grid.Column="2" Text="Петров П.П." Padding="12,10"/>
+                                    <TextBlock Grid.Column="3" Text="+7999654321" Padding="12,10"/>
+                                    <TextBlock Grid.Column="4" Text="stroika@mail.ru" Padding="12,10"/>
+                                </Grid>
+                            </Border>
+                            
+                        </StackPanel>
+                    </ScrollViewer>
+                    
+                </Grid>
+            </Border>
+            
+            <!-- Кнопки управления -->
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="20">
+                <Button Content="ДОБАВИТЬ ПАРТНЕРА"
+                        FontFamily="Segoe UI"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Background="#67BA80"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Padding="30,12"
+                        CornerRadius="4"
+                        MinWidth="180"/>
+                
+                <Button Content="РЕДАКТИРОВАТЬ"
+                        FontFamily="Segoe UI"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Background="#F4E8D3"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Padding="30,12"
+                        CornerRadius="4"
+                        MinWidth="180"/>
+                
+                <Button Content="УДАЛИТЬ"
+                        FontFamily="Segoe UI"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Background="#F4E8D3"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Padding="30,12"
+                        CornerRadius="4"
+                        MinWidth="180"/>
+            </StackPanel>
+            
+        </StackPanel>
+    </Border>
+    
+</UserControl>

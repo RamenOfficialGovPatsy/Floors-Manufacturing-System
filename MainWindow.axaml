@@ -1,0 +1,89 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Master_Floor_Project.MainWindow"
+        Title="Информационная система Мастер Пол"
+        Width="1200"
+        Height="800"
+        MinWidth="1000"
+        MinHeight="700">
+    
+    <Border Classes="main-bg">
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="60">
+            
+            <!-- Заголовок -->
+            <TextBlock Text="ИНФОРМАЦИОННАЯ СИСТЕМА МАСТЕР ПОЛ"
+                       FontFamily="Segoe UI"
+                       FontSize="36"
+                       FontWeight="Bold"
+                       Foreground="#333333"
+                       TextAlignment="Center"
+                       HorizontalAlignment="Center"
+                       TextWrapping="Wrap"/>
+            
+            <!-- Логотип -->
+            <Image Source="/Assets/Images/logo.png"
+                   Width="180"
+                   Height="180"
+                   Margin="0,60,0,0"
+                   HorizontalAlignment="Center"/>
+            
+            <!-- Контейнер для кнопок -->
+            <StackPanel Margin="0,50,0,0"
+                        Spacing="25"
+                        HorizontalAlignment="Center">
+                
+                <!-- Кнопка ПАРТНЕРЫ -->
+                <Button Content="ПАРТНЕРЫ"
+                        FontFamily="Segoe UI"
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        Background="#67BA80"
+                        BorderThickness="0"
+                        Padding="60,20"
+                        CornerRadius="6"
+                        HorizontalAlignment="Center"
+                        MinWidth="250"
+                        Click="PartnersButton_Click"/>
+                
+                <!-- Остальные кнопки пока без обработчиков -->
+                <Button Content="ПРОДУКЦИЯ"
+                        FontFamily="Segoe UI"
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        Background="#67BA80"
+                        BorderThickness="0"
+                        Padding="60,20"
+                        CornerRadius="6"
+                        HorizontalAlignment="Center"
+                        MinWidth="250"/>
+                
+                <Button Content="СКЛАД"
+                        FontFamily="Segoe UI"
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        Background="#67BA80"
+                        BorderThickness="0"
+                        Padding="60,20"
+                        CornerRadius="6"
+                        HorizontalAlignment="Center"
+                        MinWidth="250"/>
+                
+                <Button Content="ЗАЯВКИ"
+                        FontFamily="Segoe UI"
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        Background="#67BA80"
+                        BorderThickness="0"
+                        Padding="60,20"
+                        CornerRadius="6"
+                        HorizontalAlignment="Center"
+                        MinWidth="250"/>
+                
+            </StackPanel>
+            
+        </StackPanel>
+    </Border>
+    
+</Window>

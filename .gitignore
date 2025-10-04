@@ -1,0 +1,64 @@
+## .NET ##
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+# Visual Studio
+.vs/
+.vscode/
+*.user
+*.userosscache
+*.sln.docstates
+
+# User-specific files
+*.suo
+*.user
+*.userprefs
+
+# Build results
+*.DotSettings
+
+## Avalonia ##
+# Avalonia build outputs
+avalonia.build.json
+
+## OS ##
+# macOS
+.DS_Store
+
+# Linux
+*~
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+## IDE ##
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+## Project ##
+# Исключаем папки сборки, но оставляем исходный код
+!/Assets/
+/Assets/Images/*.psd
+/Assets/Images/*.ai
+
+# Временные файлы
+*.tmp
+*.temp
