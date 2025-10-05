@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Master_Floor_Project.Views;
 
 namespace Master_Floor_Project
 {
@@ -13,9 +12,15 @@ namespace Master_Floor_Project
 
         private void PartnersButton_Click(object sender, RoutedEventArgs e)
         {
-            // Создаем и показываем окно партнеров
             var partnersWindow = new PartnersWindow();
             partnersWindow.Show();
+        }
+
+        // ДОБАВЬТЕ ЭТОТ МЕТОД
+        private void ProductsButton_Click(object sender, RoutedEventArgs e)
+        {
+            var productsWindow = new ProductsWindow();
+            productsWindow.Show();
         }
 
         private void ApplicationsButton_Click(object sender, RoutedEventArgs e)

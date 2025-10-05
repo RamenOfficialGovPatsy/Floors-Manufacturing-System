@@ -57,7 +57,8 @@
                         Padding="60,20"
                         CornerRadius="6"
                         HorizontalAlignment="Center"
-                        MinWidth="250"/>
+                        MinWidth="250"
+                        Click="ProductsButton_Click"/>
                 
                 <Button Content="СКЛАД"
                         FontFamily="Segoe UI"
