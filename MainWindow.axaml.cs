@@ -1,5 +1,6 @@
+// УБЕДИТЕСЬ, ЧТО NAMESPACE И ИМЯ КЛАССА СОВПАДАЮТ С x:Class В ФАЙЛЕ ВЫШЕ
 using Avalonia.Controls;
-using Avalonia.Interactivity;
+using Master_Floor_Project.ViewModels;
 
 namespace Master_Floor_Project
 {
@@ -8,31 +9,7 @@ namespace Master_Floor_Project
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private void PartnersButton_Click(object sender, RoutedEventArgs e)
-        {
-            var partnersWindow = new PartnersWindow();
-            partnersWindow.Show();
-        }
-
-        private void ProductsButton_Click(object sender, RoutedEventArgs e)
-        {
-            var productsWindow = new ProductsWindow();
-            productsWindow.Show();
-        }
-
-        // ДОБАВЬТЕ ЭТОТ МЕТОД
-        private void WarehouseButton_Click(object sender, RoutedEventArgs e)
-        {
-            var warehouseWindow = new WarehouseWindow();
-            warehouseWindow.Show();
-        }
-
-        private void ApplicationsButton_Click(object sender, RoutedEventArgs e)
-        {
-            var applicationsWindow = new ApplicationsWindow();
-            applicationsWindow.Show();
+            DataContext = new MainWindowViewModel();
         }
     }
 }
