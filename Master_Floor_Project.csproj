@@ -9,6 +9,8 @@
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" Version="11.1.0" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="ReactiveUI" Version="22.0.1" />
     <!-- Убрали Avalonia.Themes.Fluent -->
   </ItemGroup>
 
