@@ -2,7 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Master_Floor_Project.App">
     <Application.Styles>
-        <!-- Стиль для кнопок - белый текст и выравнивание по центру -->
+        <FluentTheme /> 
+
         <Style Selector="Button">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>

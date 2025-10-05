@@ -17,8 +17,15 @@ namespace Master_Floor_Project.Views
             {
                 window.Close();
             }
+        }
 
-            // Главное окно остается открытым
+        private void AddPartnerButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Создаем и показываем окно добавления партнера
+            var partnerEditWindow = new PartnerEditWindow();
+            partnerEditWindow.Show();
+
+            // Окно партнеров остается открытым
         }
     }
 }

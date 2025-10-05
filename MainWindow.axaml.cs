@@ -17,5 +17,11 @@ namespace Master_Floor_Project
             var partnersWindow = new PartnersWindow();
             partnersWindow.Show();
         }
+
+        private void ApplicationsButton_Click(object sender, RoutedEventArgs e)
+        {
+            var applicationsWindow = new ApplicationsWindow();
+            applicationsWindow.Show();
+        }
     }
 }

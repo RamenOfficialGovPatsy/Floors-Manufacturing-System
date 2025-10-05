@@ -79,7 +79,8 @@
                         Padding="60,20"
                         CornerRadius="6"
                         HorizontalAlignment="Center"
-                        MinWidth="250"/>
+                        MinWidth="250"
+                        Click="ApplicationsButton_Click"/>
                 
             </StackPanel>
             
