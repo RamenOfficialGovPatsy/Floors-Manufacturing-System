@@ -126,6 +126,7 @@
             <!-- Кнопки управления -->
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="20">
                 <Button Content="СОЗДАТЬ ЗАЯВКУ"
+                        Click="CreateApplicationButton_Click"
                         FontFamily="Segoe UI"
                         FontSize="14"
                         FontWeight="SemiBold"

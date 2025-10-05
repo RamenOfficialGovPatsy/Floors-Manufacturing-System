@@ -3,26 +3,19 @@ using Avalonia.Interactivity;
 
 namespace Master_Floor_Project.Views
 {
-    public partial class ApplicationsView : UserControl
+    public partial class CreateApplicationView : UserControl
     {
-        public ApplicationsView()
+        public CreateApplicationView()
         {
             InitializeComponent();
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            // Закрываем текущее окно
             if (this.Parent is Window window)
             {
                 window.Close();
             }
-        }
-
-        private void CreateApplicationButton_Click(object sender, RoutedEventArgs e)
-        {
-            var createWindow = new CreateApplicationWindow();
-            createWindow.Show();
         }
     }
 }
