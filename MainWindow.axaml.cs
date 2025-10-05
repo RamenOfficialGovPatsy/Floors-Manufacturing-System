@@ -16,11 +16,17 @@ namespace Master_Floor_Project
             partnersWindow.Show();
         }
 
-        // ДОБАВЬТЕ ЭТОТ МЕТОД
         private void ProductsButton_Click(object sender, RoutedEventArgs e)
         {
             var productsWindow = new ProductsWindow();
             productsWindow.Show();
+        }
+
+        // ДОБАВЬТЕ ЭТОТ МЕТОД
+        private void WarehouseButton_Click(object sender, RoutedEventArgs e)
+        {
+            var warehouseWindow = new WarehouseWindow();
+            warehouseWindow.Show();
         }
 
         private void ApplicationsButton_Click(object sender, RoutedEventArgs e)

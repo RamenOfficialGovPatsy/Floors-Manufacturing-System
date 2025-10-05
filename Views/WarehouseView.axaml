@@ -1,0 +1,98 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Master_Floor_Project.Views.WarehouseView">
+    
+    <Border Background="#FFFFFF">
+        <StackPanel Margin="40" Spacing="20">
+            
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <Button Grid.Column="0" 
+                        Content="НАЗАД"
+                        FontFamily="Segoe UI"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Background="#F4E8D3"
+                        Foreground="#333333"
+                        BorderThickness="0"
+                        Padding="20,10"
+                        CornerRadius="4"
+                        Click="BackButton_Click"/>
+                
+                <TextBlock Grid.Column="0" Grid.ColumnSpan="2" 
+                           Text="СКЛАД"
+                           FontFamily="Segoe UI"
+                           FontSize="28"
+                           FontWeight="Bold"
+                           Foreground="#333333"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+            </Grid>
+            
+            <Border BorderThickness="1" BorderBrush="#DDDDDD" CornerRadius="4">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/> <RowDefinition Height="*"/>    </Grid.RowDefinitions>
+                    
+                    <Border Grid.Row="0" Background="#F4E8D3" BorderThickness="0,0,0,1" BorderBrush="#DDDDDD">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Grid.Column="0" Text="ПРОДУКЦИЯ" FontWeight="Bold" Padding="12,8" Foreground="#333333"/>
+                            <TextBlock Grid.Column="1" Text="КОЛИЧЕСТВО НА СКЛАДЕ" FontWeight="Bold" Padding="12,8" Foreground="#333333"/>
+                        </Grid>
+                    </Border>
+                    
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            
+                            <Border BorderThickness="0,0,0,1" Background="#F4E8D3" BorderBrush="#F0F0F0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBlock Grid.Column="0" Text='Ламинат "Премиум"' Padding="12,10" Foreground="#333333"/>
+                                    <TextBlock Grid.Column="1" Text="1250 шт." Padding="12,10" Foreground="#333333"/>
+                                </Grid>
+                            </Border>
+                            
+                            <Border BorderThickness="0,0,0,1" Background="#F4E8D3" BorderBrush="#F0F0F0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBlock Grid.Column="0" Text="Паркетная доска" Padding="12,10" Foreground="#333333"/>
+                                    <TextBlock Grid.Column="1" Text="680 шт." Padding="12,10" Foreground="#333333"/>
+                                </Grid>
+                            </Border>
+                            
+                            <Border BorderThickness="0,0,0,1" Background="#F4E8D3" BorderBrush="#F0F0F0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBlock Grid.Column="0" Text="Плинтус МДФ" Padding="12,10" Foreground="#333333"/>
+                                    <TextBlock Grid.Column="1" Text="2540 шт." Padding="12,10" Foreground="#333333"/>
+                                </Grid>
+                            </Border>
+                            
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </StackPanel>
+    </Border>
+</UserControl>

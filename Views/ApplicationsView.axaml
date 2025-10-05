@@ -19,7 +19,7 @@
                         FontFamily="Segoe UI"
                         FontSize="14"
                         FontWeight="SemiBold"
-                        Background="#E0E0E0"
+                        Background="#F4E8D3"
                         Foreground="#333333"
                         BorderThickness="0"
                         Padding="20,10"
@@ -67,7 +67,7 @@
                         <StackPanel>
                             
                             <!-- Строка 1 -->
-                            <Border BorderThickness="0,0,0,1" BorderBrush="#F0F0F0">
+                            <Border BorderThickness="0,0,0,1" Background="#F4E8D3" BorderBrush="#F0F0F0">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="1.5*"/>
@@ -84,7 +84,7 @@
                             </Border>
                             
                             <!-- Строка 2 -->
-                            <Border BorderThickness="0,0,0,1" BorderBrush="#F0F0F0">
+                            <Border BorderThickness="0,0,0,1" Background="#F4E8D3" BorderBrush="#F0F0F0">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="1.5*"/>
@@ -101,7 +101,7 @@
                             </Border>
                             
                             <!-- Строка 3 -->
-                            <Border BorderThickness="0,0,0,1" BorderBrush="#F0F0F0">
+                            <Border BorderThickness="0,0,0,1" Background="#F4E8D3" BorderBrush="#F0F0F0">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="1.5*"/>
