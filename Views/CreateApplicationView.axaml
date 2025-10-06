@@ -2,36 +2,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Master_Floor_Project.Views.CreateApplicationView">
     
+    <UserControl.Styles>
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="Background" Value="#F4E8D3"/>
+        </Style>
+        <Style Selector="DataGridRow">
+            <Setter Property="Background" Value="#F4E8D3"/>
+        </Style>
+    </UserControl.Styles>
+
     <Border Background="#FFFFFF">
         <StackPanel Margin="40" Spacing="20">
             
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                
-                <Button Grid.Column="0" 
-                        Content="НАЗАД"
-                        FontFamily="Segoe UI"
-                        FontSize="14"
-                        FontWeight="SemiBold"
-                        Background="#F4E8D3"
-                        Foreground="#333333"
-                        BorderThickness="0"
-                        Padding="20,10"
-                        CornerRadius="4"
-                        Click="BackButton_Click"/>
-                
-                <TextBlock Grid.Column="0" Grid.ColumnSpan="2"
-                           Text="СОЗДАНИЕ ЗАЯВКИ"
-                           FontFamily="Segoe UI"
-                           FontSize="28"
-                           FontWeight="Bold"
-                           Foreground="#333333"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"/>
-            </Grid>
+                </Grid>
             
             <StackPanel Spacing="10" Margin="0,15,0,0">
                 <Grid>
@@ -40,7 +24,11 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="ВЫБЕРИТЕ ПАРТНЕРА" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                    <ComboBox Grid.Column="1" PlaceholderText="ООО Вектор" Margin="20,0,0,0"/>
+                    <ComboBox Grid.Column="1" 
+                              ItemsSource="{Binding AllPartners}"
+                              DisplayMemberBinding="{Binding Name}"
+                              PlaceholderText="Выберите партнера..." 
+                              Margin="20,0,0,0"/>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -48,7 +36,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="ДАТА ЗАЯВКИ" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Column="1" Text="2024-01-20" Margin="20,0,0,0" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="2025-10-06" Margin="20,0,0,0" VerticalAlignment="Center"/>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -56,89 +44,32 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="СТАТУС" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Column="1" Text="В обработке" Margin="20,0,0,0" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="Новая" Margin="20,0,0,0" VerticalAlignment="Center"/>
                 </Grid>
             </StackPanel>
 
-            <Border BorderThickness="1" BorderBrush="#DDDDDD" CornerRadius="4">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    
-                    <Border Grid.Row="0" Background="#F4E8D3" BorderThickness="0,0,0,1" BorderBrush="#DDDDDD">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1.5*"/>
-                                <ColumnDefinition Width="1.5*"/>
-                            </Grid.ColumnDefinitions>
-                            
-                            <TextBlock Grid.Column="0" Text="ПРОДУКЦИЯ" FontWeight="Bold" Padding="12,8" Foreground="#333333"/>
-                            <TextBlock Grid.Column="1" Text="КОЛ-ВО" FontWeight="Bold" Padding="12,8" Foreground="#333333"/>
-                            <TextBlock Grid.Column="2" Text="ЦЕНА" FontWeight="Bold" Padding="12,8" Foreground="#333333"/>
-                            <TextBlock Grid.Column="3" Text="СУММА" FontWeight="Bold" Padding="12,8" Foreground="#333333"/>
-                        </Grid>
-                    </Border>
-                    
-                    <ScrollViewer Grid.Row="1"  VerticalScrollBarVisibility="Auto">
-                        <StackPanel>
-                            <Border BorderThickness="0,0,0,1" Background="#F4E8D3" BorderBrush="#F0F0F0">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="1.5*"/>
-                                        <ColumnDefinition Width="1.5*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Ламинат" Padding="12,10" Foreground="#333333"/>
-                                    <TextBlock Grid.Column="1" Text="5" Padding="12,10" Foreground="#333333"/>
-                                    <TextBlock Grid.Column="2" Text="1500 руб." Padding="12,10" Foreground="#333333"/>
-                                    <TextBlock Grid.Column="3" Text="7500 руб." Padding="12,10" Foreground="#333333"/>
-                                </Grid>
-                            </Border>
-                             <Border BorderThickness="0,0,0,1" Background="#F4E8D3" BorderBrush="#F0F0F0">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="1.5*"/>
-                                        <ColumnDefinition Width="1.5*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Паркетная доска" Padding="12,10" Foreground="#333333"/>
-                                    <TextBlock Grid.Column="1" Text="2" Padding="12,10" Foreground="#333333"/>
-                                    <TextBlock Grid.Column="2" Text="2800 руб." Padding="12,10" Foreground="#333333"/>
-                                    <TextBlock Grid.Column="3" Text="5600 руб." Padding="12,10" Foreground="#333333"/>
-                                </Grid>
-                            </Border>
-                             <Border BorderThickness="0" Background="#F4E8D3" BorderBrush="#F0F0F0">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="1.5*"/>
-                                        <ColumnDefinition Width="1.5*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Плинтус МДФ" Padding="12,10" Foreground="#333333"/>
-                                    <TextBlock Grid.Column="1" Text="10" Padding="12,10" Foreground="#333333"/>
-                                    <TextBlock Grid.Column="2" Text="450 руб." Padding="12,10" Foreground="#333333"/>
-                                    <TextBlock Grid.Column="3" Text="4500 руб." Padding="12,10" Foreground="#333333"/>
-                                </Grid>
-                            </Border>
-                        </StackPanel>
-                    </ScrollViewer>
-                </Grid>
-            </Border>
+            <DataGrid ItemsSource="{Binding Items}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      GridLinesVisibility="Horizontal"
+                      BorderThickness="1" BorderBrush="#DDDDDD">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ПРОДУКЦИЯ" Binding="{Binding ProductName}" Width="2*"/>
+                    <DataGridTextColumn Header="КОЛ-ВО" Binding="{Binding Quantity}" Width="1*"/>
+                    <DataGridTextColumn Header="ЦЕНА" Binding="{Binding Price, StringFormat='{}{0:N2} руб.'}" Width="1.5*"/>
+                    <DataGridTextColumn Header="СУММА" Binding="{Binding Sum, StringFormat='{}{0:N2} руб.'}" Width="1.5*"/>
+                </DataGrid.Columns>
+            </DataGrid>
             
-            <TextBlock Text="Итого: 17600 руб." FontWeight="Bold" FontSize="16" HorizontalAlignment="Right"/>
+            <TextBlock Text="{Binding TotalSum, StringFormat='Итого: {0:N2} руб.'}" 
+                       FontWeight="Bold" FontSize="16" HorizontalAlignment="Right"/>
             
             <StackPanel Orientation="Horizontal" Spacing="15" HorizontalAlignment="Right" Margin="0,10,0,0">
-                <Button Content="ДОБАВИТЬ ПРОДУКЦИЮ" Background="#F4E8D3" Foreground="White"/>
-                <Button Content="СОХРАНИТЬ ЗАЯВКУ" Background="#67BA80" Foreground="White"/>
-                <Button Content="ОТМЕНА" Background="#67BA80" Foreground="White"/>
+                <Button Content="ДОБАВИТЬ ПРОДУКЦИЮ" Command="{Binding AddProductCommand}" Background="#F4E8D3" Foreground="White"/>
+                <Button Content="СОХРАНИТЬ ЗАЯВКУ" Command="{Binding SaveApplicationCommand}" Background="#67BA80" Foreground="White"/>
+                <Button Content="ОТМЕНА" Command="{Binding CancelCommand}" Background="#67BA80" Foreground="White"/>
             </StackPanel>
             
-        </StackPanel> </Border>
+        </StackPanel>
+    </Border>
 </UserControl>

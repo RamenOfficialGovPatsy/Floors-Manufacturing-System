@@ -2,6 +2,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Master_Floor_Project.Views.ApplicationsView">
     
+    <UserControl.Styles>
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="Background" Value="#F4E8D3"/>
+        </Style>
+        <Style Selector="DataGridRow">
+            <Setter Property="Background" Value="#F4E8D3"/>
+        </Style>
+    </UserControl.Styles>
+
     <Border Background="#FFFFFF">
         <StackPanel Margin="40" Spacing="25">
             
@@ -25,7 +34,8 @@
             <DataGrid ItemsSource="{Binding Applications}"
                       AutoGenerateColumns="False"
                       IsReadOnly="True"
-                      GridLinesVisibility="Horizontal">
+                      GridLinesVisibility="Horizontal"
+                      BorderThickness="1" BorderBrush="#DDDDDD">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="НОМЕР ЗАЯВКИ" Binding="{Binding ApplicationNumber}" Width="1.5*"/>
                     <DataGridTextColumn Header="ПАРТНЕР" Binding="{Binding PartnerName}" Width="2*"/>
@@ -48,5 +58,4 @@
         
         </StackPanel>
     </Border>
-    
 </UserControl>

@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Threading.Tasks; // Добавлено
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Master_Floor_Project.Models;
@@ -8,6 +9,9 @@ namespace Master_Floor_Project.ViewModels
 {
     public partial class PartnersViewModel : ViewModelBase
     {
+        // ИНЖЕКЦИЯ СЕРВИСА
+        private readonly IPartnerService _partnerService;
+
         [ObservableProperty]
         private ObservableCollection<Partner> _partners = new();
 
@@ -18,35 +22,36 @@ namespace Master_Floor_Project.ViewModels
 
         public PartnersViewModel()
         {
-            LoadPartners();
+            // СОЗДАЕМ ЭКЗЕМПЛЯР НАШЕГО СЕРВИСА
+            _partnerService = new PartnerService();
+
+            // Загружаем партнеров при запуске
+            _ = LoadPartnersAsync();
         }
 
-        private void LoadPartners()
+        // МЕТОД СТАЛ АСИНХРОННЫМ И ИСПОЛЬЗУЕТ СЕРВИС
+        private async Task LoadPartnersAsync()
         {
-            Partners.Add(new Partner { Name = "ООО \"Вектор\"", Inn = "1234567890", DirectorName = "Иванов И.И.", Phone = "+79991234567", Email = "vector@mail.com" });
-            Partners.Add(new Partner { Name = "ООО \"Стройка\"", Inn = "0987654321", DirectorName = "Петров П.П.", Phone = "+79997654321", Email = "stroika@mail.com" });
-            Partners.Add(new Partner { Name = "ИП Сидоров А.В.", Inn = "5554443331", DirectorName = "Сидоров А.В.", Phone = "+79995554433", Email = "sidorov@mail.com" });
-        }
+            var partnersFromService = await _partnerService.GetPartnersAsync();
 
-        // ИЗМЕНЕНИЕ: Используем свойство 'SelectedPartner' вместо поля '_selectedPartner'
-        private bool CanEditOrDeletePartner() => SelectedPartner != null;
+            Partners.Clear();
+            foreach (var partner in partnersFromService)
+            {
+                Partners.Add(partner);
+            }
+        }
 
         [RelayCommand]
-        private void AddPartner()
-        {
-            NavigationService.ShowWindow<PartnerEditWindow>();
-        }
+        private void AddPartner() => NavigationService.ShowWindow<PartnerEditWindow>();
+
+        private bool CanEditOrDeletePartner() => SelectedPartner != null;
 
         [RelayCommand(CanExecute = nameof(CanEditOrDeletePartner))]
-        private void EditPartner()
-        {
-            NavigationService.ShowWindow<PartnerEditWindow>();
-        }
+        private void EditPartner() => NavigationService.ShowWindow<PartnerEditWindow>();
 
         [RelayCommand(CanExecute = nameof(CanEditOrDeletePartner))]
         private void DeletePartner()
         {
-            // ИЗМЕНЕНИЕ: Используем свойство 'SelectedPartner' вместо поля '_selectedPartner'
             if (SelectedPartner != null)
             {
                 Partners.Remove(SelectedPartner);
