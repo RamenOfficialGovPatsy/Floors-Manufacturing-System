@@ -12,17 +12,10 @@ namespace Master_Floor_Project.Views
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            // Закрываем текущее окно
             if (this.Parent is Window window)
             {
                 window.Close();
             }
-        }
-
-        private void CreateApplicationButton_Click(object sender, RoutedEventArgs e)
-        {
-            var createWindow = new CreateApplicationWindow();
-            createWindow.Show();
         }
     }
 }
