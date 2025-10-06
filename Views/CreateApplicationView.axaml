@@ -15,7 +15,21 @@
         <StackPanel Margin="40" Spacing="20">
             
             <Grid>
-                </Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <Button Grid.Column="0" 
+                        Content="НАЗАД"
+                        Click="BackButton_Click"
+                        Background="#F4E8D3" Foreground="#333333"/>
+                
+                <TextBlock Grid.Column="1" 
+                           Text="СОЗДАНИЕ ЗАЯВКИ"
+                           FontSize="28" FontWeight="Bold" Foreground="#333333"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
             
             <StackPanel Spacing="10" Margin="0,15,0,0">
                 <Grid>
@@ -61,8 +75,14 @@
                 </DataGrid.Columns>
             </DataGrid>
             
-            <TextBlock Text="{Binding TotalSum, StringFormat='Итого: {0:N2} руб.'}" 
-                       FontWeight="Bold" FontSize="16" HorizontalAlignment="Right"/>
+            <StackPanel HorizontalAlignment="Right" Spacing="5">
+                <TextBlock Text="{Binding SubTotal, StringFormat='Сумма: {0:N2} руб.'}" 
+                           FontSize="14"/>
+                <TextBlock Text="{Binding DiscountPercentage, StringFormat='Скидка: {0:P0}'}"
+                           Foreground="DarkRed" FontSize="14"/>
+                <TextBlock Text="{Binding FinalTotal, StringFormat='Итого: {0:N2} руб.'}" 
+                           FontWeight="Bold" FontSize="16"/>
+            </StackPanel>
             
             <StackPanel Orientation="Horizontal" Spacing="15" HorizontalAlignment="Right" Margin="0,10,0,0">
                 <Button Content="ДОБАВИТЬ ПРОДУКЦИЮ" Command="{Binding AddProductCommand}" Background="#F4E8D3" Foreground="White"/>
