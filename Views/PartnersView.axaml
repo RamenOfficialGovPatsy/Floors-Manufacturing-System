@@ -1,19 +1,32 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="Master_Floor_Project.Views.PartnersView"
-             Width="1200" Height="700">
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Master_Floor_Project.Views.PartnersView">
     
-    <Border Classes="main-bg">
+    <UserControl.Styles>
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="Background" Value="#F4E8D3"/>
+        </Style>
+        <Style Selector="DataGridRow">
+            <Setter Property="Background" Value="#F4E8D3"/>
+        </Style>
+        <Style Selector="DataGridRow:selected">
+            <Setter Property="Background" Value="#A0A0A0"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Border Background="#FFFFFF" PointerPressed="DeselectDataGrid_OnPointerPressed">
         <StackPanel Margin="40" Spacing="20">
             
-            <!-- Заголовок и кнопка НАЗАД -->
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 
-                <!-- Кнопка НАЗАД -->
                 <Button Grid.Column="0" 
                         Content="НАЗАД"
                         FontFamily="Segoe UI"
@@ -26,8 +39,7 @@
                         CornerRadius="4"
                         Click="BackButton_Click"/>
                 
-                <!-- Заголовок по центру -->
-                <TextBlock Grid.Column="1" 
+                <TextBlock Grid.Column="0" Grid.ColumnSpan="2"
                            Text="ПАРТНЕРЫ"
                            FontFamily="Segoe UI"
                            FontSize="28"
@@ -37,84 +49,26 @@
                            VerticalAlignment="Center"/>
             </Grid>
             
-            <!-- Таблица партнеров -->
-            <Border BorderThickness="1" BorderBrush="#DDDDDD" CornerRadius="4">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/> <!-- Заголовки -->
-                        <RowDefinition Height="*"/>    <!-- Данные -->
-                    </Grid.RowDefinitions>
-                    
-                    <!-- Заголовки таблицы -->
-                    <Border Grid.Row="0" Background="#F4E8D3" BorderThickness="0,0,0,1" BorderBrush="#DDDDDD">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1.5*"/>
-                                <ColumnDefinition Width="2*"/>
-                            </Grid.ColumnDefinitions>
-                            
-                            <TextBlock Grid.Column="0" Text="НАИМЕНОВАНИЕ" FontWeight="Bold" Padding="12,8" Foreground="#333333"/>
-                            <TextBlock Grid.Column="1" Text="ИНН" FontWeight="Bold" Padding="12,8" Foreground="#333333"/>
-                            <TextBlock Grid.Column="2" Text="ФИО ДИРЕКТОРА" FontWeight="Bold" Padding="12,8" Foreground="#333333"/>
-                            <TextBlock Grid.Column="3" Text="ТЕЛЕФОН" FontWeight="Bold" Padding="12,8" Foreground="#333333"/>
-                            <TextBlock Grid.Column="4" Text="EMAIL" FontWeight="Bold" Padding="12,8" Foreground="#333333"/>
-                        </Grid>
-                    </Border>
-                    
-                    <!-- Данные таблицы (заглушки) -->
-                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                        <StackPanel>
-                            
-                            <!-- Строка 1 -->
-                            <Border BorderThickness="0,0,0,1" BorderBrush="#F0F0F0" Background="#F4E8D3">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="1.5*"/>
-                                        <ColumnDefinition Width="2*"/>
-                                    </Grid.ColumnDefinitions>
-                                    
-                                    <TextBlock Grid.Column="0" Text='ООО "Вектор"' Padding="12,10" Foreground="#333333"/>
-                                    <TextBlock Grid.Column="1" Text="123456789" Padding="12,10" Foreground="#333333"/>
-                                    <TextBlock Grid.Column="2" Text="Иванов И.И." Padding="12,10" Foreground="#333333"/>
-                                    <TextBlock Grid.Column="3" Text="+7999123456" Padding="12,10" Foreground="#333333"/>
-                                    <TextBlock Grid.Column="4" Text="vector@mail.ru" Padding="12,10" Foreground="#333333"/>
-                                </Grid>
-                            </Border>
-                            
-                            <!-- Строка 2 -->
-                            <Border BorderThickness="0,0,0,1" BorderBrush="#F0F0F0" Background="#F4E8D3">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="1.5*"/>
-                                        <ColumnDefinition Width="2*"/>
-                                    </Grid.ColumnDefinitions>
-                                    
-                                    <TextBlock Grid.Column="0" Text='ООО "Стройка"' Padding="12,10" Foreground="#333333"/>
-                                    <TextBlock Grid.Column="1" Text="987654321" Padding="12,10" Foreground="#333333"/>
-                                    <TextBlock Grid.Column="2" Text="Петров П.П." Padding="12,10" Foreground="#333333"/>
-                                    <TextBlock Grid.Column="3" Text="+7999654321" Padding="12,10" Foreground="#333333"/>
-                                    <TextBlock Grid.Column="4" Text="stroika@mail.ru" Padding="12,10" Foreground="#333333"/>
-                                </Grid>
-                            </Border>
-                            
-                        </StackPanel>
-                    </ScrollViewer>
-                    
-                </Grid>
-            </Border>
+            <DataGrid ItemsSource="{Binding Partners}"
+                      SelectedItem="{Binding SelectedPartner}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      GridLinesVisibility="Horizontal"
+                      CanUserResizeColumns="True"
+                      BorderThickness="1"
+                      BorderBrush="#DDDDDD">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="НАИМЕНОВАНИЕ" Binding="{Binding Name}" Width="2*"/>
+                    <DataGridTextColumn Header="ИНН" Binding="{Binding Inn}" Width="1*"/>
+                    <DataGridTextColumn Header="ФИО ДИРЕКТОРА" Binding="{Binding DirectorName}" Width="2*"/>
+                    <DataGridTextColumn Header="ТЕЛЕФОН" Binding="{Binding Phone}" Width="1.5*"/>
+                    <DataGridTextColumn Header="EMAIL" Binding="{Binding Email}" Width="2*"/>
+                </DataGrid.Columns>
+            </DataGrid>
             
-            <!-- Кнопки управления -->
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="20">
                 <Button Content="ДОБАВИТЬ ПАРТНЕРА"
+                        Command="{Binding AddPartnerCommand}"
                         FontFamily="Segoe UI"
                         FontSize="14"
                         FontWeight="SemiBold"
@@ -123,10 +77,10 @@
                         BorderThickness="0"
                         Padding="30,12"
                         CornerRadius="4"
-                        MinWidth="180"
-                        Click="AddPartnerButton_Click"/>
+                        MinWidth="180"/>
                 
                 <Button Content="РЕДАКТИРОВАТЬ"
+                        Command="{Binding EditPartnerCommand}"
                         FontFamily="Segoe UI"
                         FontSize="14"
                         FontWeight="SemiBold"
@@ -138,6 +92,7 @@
                         MinWidth="180"/>
                 
                 <Button Content="УДАЛИТЬ"
+                        Command="{Binding DeletePartnerCommand}"
                         FontFamily="Segoe UI"
                         FontSize="14"
                         FontWeight="SemiBold"
@@ -151,5 +106,4 @@
             
         </StackPanel>
     </Border>
-    
 </UserControl>

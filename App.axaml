@@ -2,14 +2,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Master_Floor_Project.App">
     <Application.Styles>
-        <FluentTheme/> 
+        <FluentTheme />
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
 
         <Style Selector="Button">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
-
         <Style Selector="Button.main-menu-button">
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
@@ -20,6 +20,5 @@
             <Setter Property="MinWidth" Value="250"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
-        
     </Application.Styles>
 </Application>

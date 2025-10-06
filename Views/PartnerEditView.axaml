@@ -11,6 +11,10 @@
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Margin" Value="20,0,0,0"/>
         </Style>
+        
+        <Style Selector="TextBox:error">
+            <Setter Property="BorderBrush" Value="Red"/>
+        </Style>
     </UserControl.Styles>
     
     <Border Classes="main-bg" Background="#FFFFFF">
@@ -34,7 +38,7 @@
                         CornerRadius="4"
                         Click="BackButton_Click"/>
                 
-                <TextBlock Grid.Column="1"
+                <TextBlock Grid.Column="0" Grid.ColumnSpan="2"
                            Text="ДОБАВЛЕНИЕ ПАРТНЕРА"
                            FontFamily="Segoe UI"
                            FontSize="24"
@@ -51,125 +55,8 @@
                         <ColumnDefinition Width="200"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" 
-                               Text="НАИМЕНОВАНИЕ КОМПАНИИ" 
-                               FontFamily="Segoe UI"
-                               FontSize="14"
-                               FontWeight="SemiBold"
-                               Foreground="#333333"
-                               VerticalAlignment="Center"/>
-                    <TextBox Grid.Column="1"
-                             FontFamily="Segoe UI"
-                             FontSize="14"
-                             Padding="12,10"
-                             CornerRadius="4"
-                             Height="40"
-                             VerticalContentAlignment="Center"/>
-                </Grid>
-                
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" 
-                               Text="ЮРИДИЧЕСКИЙ АДРЕС" 
-                               FontFamily="Segoe UI"
-                               FontSize="14"
-                               FontWeight="SemiBold"
-                               Foreground="#333333"
-                               VerticalAlignment="Center"/>
-                    <TextBox Grid.Column="1"
-                             FontFamily="Segoe UI"
-                             FontSize="14"
-                             Padding="12,10"
-                             CornerRadius="4"
-                             Height="40"
-                             VerticalContentAlignment="Center"/>
-                </Grid>
-                
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" 
-                               Text="ИНН" 
-                               FontFamily="Segoe UI"
-                               FontSize="14"
-                               FontWeight="SemiBold"
-                               Foreground="#333333"
-                               VerticalAlignment="Center"/>
-                    <TextBox Grid.Column="1"
-                             FontFamily="Segoe UI"
-                             FontSize="14"
-                             Padding="12,10"
-                             CornerRadius="4"
-                             Height="40"
-                             VerticalContentAlignment="Center"/>
-                </Grid>
-                
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" 
-                               Text="ФИО ДИРЕКТОРА" 
-                               FontFamily="Segoe UI"
-                               FontSize="14"
-                               FontWeight="SemiBold"
-                               Foreground="#333333"
-                               VerticalAlignment="Center"/>
-                    <TextBox Grid.Column="1"
-                             FontFamily="Segoe UI"
-                             FontSize="14"
-                             Padding="12,10"
-                             CornerRadius="4"
-                             Height="40"
-                             VerticalContentAlignment="Center"/>
-                </Grid>
-                
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" 
-                               Text="ТЕЛЕФОН" 
-                               FontFamily="Segoe UI"
-                               FontSize="14"
-                               FontWeight="SemiBold"
-                               Foreground="#333333"
-                               VerticalAlignment="Center"/>
-                    <TextBox Grid.Column="1"
-                             FontFamily="Segoe UI"
-                             FontSize="14"
-                             Padding="12,10"
-                             CornerRadius="4"
-                             Height="40"
-                             VerticalContentAlignment="Center"/>
-                </Grid>
-                
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" 
-                               Text="EMAIL" 
-                               FontFamily="Segoe UI"
-                               FontSize="14"
-                               FontWeight="SemiBold"
-                               Foreground="#333333"
-                               VerticalAlignment="Center"/>
-                    <TextBox Grid.Column="1"
-                             FontFamily="Segoe UI"
-                             FontSize="14"
-                             Padding="12,10"
-                             CornerRadius="4"
-                             Height="40"
-                             VerticalContentAlignment="Center"/>
+                    <TextBlock Grid.Column="0" Text="НАИМЕНОВАНИЕ КОМПАНИИ" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Text="{Binding Name, Mode=TwoWay}"/>
                 </Grid>
 
                 <Grid>
@@ -177,22 +64,57 @@
                         <ColumnDefinition Width="200"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" 
-                               Text="РЕЙТИНГ" 
-                               FontFamily="Segoe UI"
-                               FontSize="14"
-                               FontWeight="SemiBold"
-                               Foreground="#333333"
-                               VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="0" Text="ЮРИДИЧЕСКИЙ АДРЕС" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Text="{Binding Address, Mode=TwoWay}"/>
+                </Grid>
+                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="ИНН" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Text="{Binding Inn, Mode=TwoWay}"/>
+                </Grid>
+                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="ФИО ДИРЕКТОРА" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Text="{Binding DirectorName, Mode=TwoWay}"/>
+                </Grid>
+                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="ТЕЛЕФОН" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Text="{Binding Phone, Mode=TwoWay}"/>
+                </Grid>
+                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="EMAIL" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Text="{Binding Email, Mode=TwoWay}"/>
+                </Grid>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="РЕЙТИНГ" FontWeight="SemiBold" VerticalAlignment="Center"/>
                     
-                    <ComboBox Grid.Column="1"
-                              FontFamily="Segoe UI Emoji, Noto Color Emoji, Segoe UI"
-                              FontSize="14"
-                              Padding="12,10"
-                              CornerRadius="4"
-                              Height="40"
-                              VerticalContentAlignment="Center"
-                              PlaceholderText="Выберите рейтинг">
+                    <ComboBox Grid.Column="1" SelectedItem="{Binding Rating, Mode=TwoWay}" 
+                    PlaceholderText="Выберите рейтинг"
+                    FontFamily="Segoe UI Emoji, Noto Color Emoji, Segoe UI">
                         <ComboBox.Items>
                             <sys:String>⭐</sys:String>
                             <sys:String>⭐⭐</sys:String>
@@ -202,35 +124,11 @@
                         </ComboBox.Items>
                     </ComboBox>
                 </Grid>
-                
             </StackPanel>
             
-            <StackPanel HorizontalAlignment="Center" 
-                        Orientation="Horizontal" 
-                        Spacing="20"
-                        Margin="0,30,0,0">
-                <Button Content="СОХРАНИТЬ"
-                        FontFamily="Segoe UI"
-                        FontSize="16"
-                        FontWeight="SemiBold"
-                        Background="#67BA80"
-                        Foreground="White"
-                        BorderThickness="0"
-                        Padding="40,15"
-                        CornerRadius="4"
-                        MinWidth="150"/>
-                
-                <Button Content="ОТМЕНА"
-                        FontFamily="Segoe UI"
-                        FontSize="16"
-                        FontWeight="SemiBold"
-                        Background="#F4E8D3"
-                        Foreground="White"
-                        BorderThickness="0"
-                        Padding="40,15"
-                        CornerRadius="4"
-                        MinWidth="150"
-                        Click="CancelButton_Click"/>
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="20" Margin="0,30,0,0">
+                <Button Content="СОХРАНИТЬ" Command="{Binding SaveCommand}" Background="#67BA80" Foreground="White"/>
+                <Button Content="ОТМЕНА" Click="CancelButton_Click" Background="#F4E8D3" Foreground="#333333"/>
             </StackPanel>
             
         </StackPanel>
