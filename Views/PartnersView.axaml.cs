@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -13,6 +14,17 @@ namespace Master_Floor_Project.Views
         public PartnersView()
         {
             InitializeComponent();
+            this.Loaded += PartnersView_Loaded;
+        }
+
+        private async void PartnersView_Loaded(object? sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("2. Событие PartnersView_Loaded СРАБОТАЛО.");
+            if (DataContext is PartnersViewModel viewModel)
+            {
+                await viewModel.LoadPartnersAsync();
+            }
+            else Console.WriteLine("ОШИБКА: DataContext не является PartnersViewModel!");
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

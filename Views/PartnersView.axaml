@@ -81,6 +81,7 @@
                 
                 <Button Content="РЕДАКТИРОВАТЬ"
                         Command="{Binding EditPartnerCommand}"
+                        CommandParameter="{Binding SelectedPartner}"
                         FontFamily="Segoe UI"
                         FontSize="14"
                         FontWeight="SemiBold"
@@ -93,6 +94,7 @@
                 
                 <Button Content="УДАЛИТЬ"
                         Command="{Binding DeletePartnerCommand}"
+                        CommandParameter="{Binding SelectedPartner}"
                         FontFamily="Segoe UI"
                         FontSize="14"
                         FontWeight="SemiBold"

@@ -1,19 +1,20 @@
+using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks; // Добавлено
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Input; // <-- ВОТ ОНА, недостающая строка!
+using Master_Floor_Project.Data;
 using Master_Floor_Project.Models;
-using Master_Floor_Project.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Master_Floor_Project.ViewModels
 {
     public partial class PartnersViewModel : ViewModelBase
     {
-        // ИНЖЕКЦИЯ СЕРВИСА
-        private readonly IPartnerService _partnerService;
+        private readonly AppDbContext _context;
 
         [ObservableProperty]
-        private ObservableCollection<Partner> _partners = new();
+        private ObservableCollection<Partner> _partners;
 
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(EditPartnerCommand))]
@@ -22,40 +23,49 @@ namespace Master_Floor_Project.ViewModels
 
         public PartnersViewModel()
         {
-            // СОЗДАЕМ ЭКЗЕМПЛЯР НАШЕГО СЕРВИСА
-            _partnerService = new PartnerService();
-
-            // Загружаем партнеров при запуске
-            _ = LoadPartnersAsync();
+            _context = new AppDbContext();
+            Partners = new ObservableCollection<Partner>();
         }
 
-        // МЕТОД СТАЛ АСИНХРОННЫМ И ИСПОЛЬЗУЕТ СЕРВИС
-        private async Task LoadPartnersAsync()
+        public async Task LoadPartnersAsync()
         {
-            var partnersFromService = await _partnerService.GetPartnersAsync();
-
-            Partners.Clear();
-            foreach (var partner in partnersFromService)
+            try
             {
-                Partners.Add(partner);
+                Partners.Clear();
+                var partnersList = await _context.Partners.ToListAsync();
+                foreach (var partner in partnersList)
+                {
+                    Partners.Add(partner);
+                }
+            }
+            catch (Exception ex)
+            {
+                // В будущем здесь будет логирование или окно с ошибкой
+                Console.WriteLine($"Ошибка при загрузке партнеров: {ex.Message}");
             }
         }
 
         [RelayCommand]
-        private void AddPartner() => NavigationService.ShowWindow<PartnerEditWindow>();
-
-        private bool CanEditOrDeletePartner() => SelectedPartner != null;
-
-        [RelayCommand(CanExecute = nameof(CanEditOrDeletePartner))]
-        private void EditPartner() => NavigationService.ShowWindow<PartnerEditWindow>();
-
-        [RelayCommand(CanExecute = nameof(CanEditOrDeletePartner))]
-        private void DeletePartner()
+        private void AddPartner()
         {
-            if (SelectedPartner != null)
-            {
-                Partners.Remove(SelectedPartner);
-            }
+            // TODO: Реализовать логику открытия окна добавления партнера
+        }
+
+        [RelayCommand(CanExecute = nameof(CanEditOrDeletePartner))]
+        private void EditPartner(Partner? partner)
+        {
+            // TODO: Реализовать логику открытия окна редактирования
+        }
+
+        [RelayCommand(CanExecute = nameof(CanEditOrDeletePartner))]
+        private void DeletePartner(Partner? partner)
+        {
+            // TODO: Реализовать логику удаления партнера
+        }
+
+        private bool CanEditOrDeletePartner()
+        {
+            return SelectedPartner != null;
         }
     }
 }
