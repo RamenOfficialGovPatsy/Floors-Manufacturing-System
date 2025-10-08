@@ -1,5 +1,10 @@
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
+using System;
+using System.Linq;
 
 namespace Master_Floor_Project.Views
 {
@@ -16,6 +21,17 @@ namespace Master_Floor_Project.Views
             {
                 window.Close();
             }
+        }
+
+        private void DeselectDataGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
+        {
+            if (e.Source is not Visual source) return;
+
+            var isClickOnRow = source.GetSelfAndVisualAncestors()
+                .OfType<DataGridRow>()
+                .Any();
+
+            if (!isClickOnRow && ApplicationsDataGrid != null) ApplicationsDataGrid.SelectedItem = null;
         }
     }
 }

@@ -22,5 +22,24 @@ namespace Master_Floor_Project.Models
 
         [Column("status")]
         public string Status { get; set; } = string.Empty;
+
+        [NotMapped]
+        public string ApplicationNumber => $"Z-{DateCreated:yyyy}-{ApplicationId:D3}";
+
+        [NotMapped]
+        public string PartnerName => GetPartnerName(PartnerId);
+
+        private string GetPartnerName(int partnerID)
+        {
+            return partnerID switch
+            {
+                1 => "ООО \"Вектор\"",
+                2 => "ООО \"Стройка\"",
+                3 => "ИП Сидоров",
+                _ => "Неизвестный партнер"
+
+            };
+        }
+
     }
 }

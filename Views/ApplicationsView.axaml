@@ -11,7 +11,7 @@
         </Style>
     </UserControl.Styles>
 
-    <Border Background="#FFFFFF">
+    <Border Background="#FFFFFF" PointerPressed="DeselectDataGrid_OnPointerPressed">
         <StackPanel Margin="40" Spacing="25">
             
             <Grid>
@@ -31,7 +31,8 @@
                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
             
-            <DataGrid ItemsSource="{Binding Applications}"
+            <DataGrid x:Name="ApplicationsDataGrid"
+                      ItemsSource="{Binding Applications}"
                       AutoGenerateColumns="False"
                       IsReadOnly="True"
                       GridLinesVisibility="Horizontal"

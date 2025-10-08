@@ -4,7 +4,7 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Master_Floor_Project.Models;
-// using Master_Floor_Project.Services; // Services пока не используются, можно закомментировать
+using Master_Floor_Project.Services; // Services пока не используются, можно закомментировать
 
 namespace Master_Floor_Project.ViewModels
 {
@@ -14,11 +14,17 @@ namespace Master_Floor_Project.ViewModels
         private ObservableCollection<Application> _applications = new();
 
         // NavigationService пока не используется, можно убрать
-        // public ICommand CreateApplicationCommand { get; }
+        public ICommand CreateApplicationCommand { get; }
 
         public ApplicationViewModel()
         {
             // CreateApplicationCommand = new RelayCommand(() => NavigationService.ShowWindow<CreateApplicationWindow>());
+            CreateApplicationCommand = new RelayCommand(() =>
+            {
+                Console.WriteLine("Кнопка СОЗДАТЬ ЗАЯВКУ нажата");
+                NavigationService.ShowWindow<CreateApplicationWindow>();
+
+            });
             LoadApplications();
         }
 
