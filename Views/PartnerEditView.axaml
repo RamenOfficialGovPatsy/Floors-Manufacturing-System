@@ -17,18 +17,16 @@
         </Style>
     </UserControl.Styles>
     
-    <Border Classes="main-bg" Background="#FFFFFF">
+    <Border Classes="main-bg" Background="#FFFFFF" PointerPressed="Deselect_OnPointerPressed">
         <StackPanel Margin="40" Spacing="20">
-            
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                
+         
                 <Button Grid.Column="0" 
                         Content="НАЗАД"
-                        FontFamily="Segoe UI"
                         FontSize="14"
                         FontWeight="SemiBold"
                         Background="#F4E8D3"
@@ -40,7 +38,6 @@
                 
                 <TextBlock Grid.Column="0" Grid.ColumnSpan="2"
                            Text="ДОБАВЛЕНИЕ ПАРТНЕРА"
-                           FontFamily="Segoe UI"
                            FontSize="24"
                            FontWeight="Bold"
                            Foreground="#333333"
@@ -67,7 +64,7 @@
                     <TextBlock Grid.Column="0" Text="ЮРИДИЧЕСКИЙ АДРЕС" FontWeight="SemiBold" VerticalAlignment="Center"/>
                     <TextBox Grid.Column="1" Text="{Binding Address, Mode=TwoWay}"/>
                 </Grid>
-                
+             
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200"/>
@@ -113,8 +110,8 @@
                     <TextBlock Grid.Column="0" Text="РЕЙТИНГ" FontWeight="SemiBold" VerticalAlignment="Center"/>
                     
                     <ComboBox Grid.Column="1" SelectedItem="{Binding Rating, Mode=TwoWay}" 
-                    PlaceholderText="Выберите рейтинг"
-                    FontFamily="Segoe UI Emoji, Noto Color Emoji, Segoe UI">
+                              PlaceholderText="Выберите рейтинг"
+                              FontFamily="Segoe UI Emoji, Noto Color Emoji, Segoe UI">
                         <ComboBox.Items>
                             <sys:String>⭐</sys:String>
                             <sys:String>⭐⭐</sys:String>
@@ -132,5 +129,4 @@
             </StackPanel>
             
         </StackPanel>
-    </Border>
-</UserControl>
+    </Border> </UserControl>

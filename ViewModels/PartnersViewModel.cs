@@ -1,17 +1,17 @@
+// ViewModels/PartnersViewModel.cs
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Master_Floor_Project.Models;
+using Master_Floor_Project.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input; // <-- ВОТ ОНА, недостающая строка!
-using Master_Floor_Project.Data;
-using Master_Floor_Project.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace Master_Floor_Project.ViewModels
 {
     public partial class PartnersViewModel : ViewModelBase
     {
-        private readonly AppDbContext _context;
+        private readonly IPartnerService _partnerService;
 
         [ObservableProperty]
         private ObservableCollection<Partner> _partners;
@@ -21,18 +21,22 @@ namespace Master_Floor_Project.ViewModels
         [NotifyCanExecuteChangedFor(nameof(DeletePartnerCommand))]
         private Partner? _selectedPartner;
 
+        [ObservableProperty]
+        private bool _isLoading = true;
+
         public PartnersViewModel()
         {
-            _context = new AppDbContext();
+            _partnerService = new PartnerService();
             Partners = new ObservableCollection<Partner>();
         }
 
         public async Task LoadPartnersAsync()
         {
+            IsLoading = true;
             try
             {
                 Partners.Clear();
-                var partnersList = await _context.Partners.ToListAsync();
+                var partnersList = await _partnerService.GetPartnersAsync();
                 foreach (var partner in partnersList)
                 {
                     Partners.Add(partner);
@@ -40,27 +44,42 @@ namespace Master_Floor_Project.ViewModels
             }
             catch (Exception ex)
             {
-                // В будущем здесь будет логирование или окно с ошибкой
                 Console.WriteLine($"Ошибка при загрузке партнеров: {ex.Message}");
+            }
+            finally
+            {
+                IsLoading = false;
             }
         }
 
         [RelayCommand]
         private void AddPartner()
         {
-            // TODO: Реализовать логику открытия окна добавления партнера
+            NavigationService.ShowWindow<PartnerEditWindow>();
         }
 
         [RelayCommand(CanExecute = nameof(CanEditOrDeletePartner))]
         private void EditPartner(Partner? partner)
         {
-            // TODO: Реализовать логику открытия окна редактирования
+            // TODO: Логика открытия окна редактирования
         }
 
         [RelayCommand(CanExecute = nameof(CanEditOrDeletePartner))]
-        private void DeletePartner(Partner? partner)
+        private async Task DeletePartnerAsync(Partner? partner)
         {
-            // TODO: Реализовать логику удаления партнера
+            if (partner is null) return;
+
+            try
+            {
+                await _partnerService.DeletePartnerAsync(partner.PartnerId);
+                // ИЗМЕНЕНИЕ: Вместо удаления из коллекции, перезагружаем весь список.
+                // Это надежно обновит DataGrid и уберет пустую строку.
+                await LoadPartnersAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка при удалении партнера: {ex.Message}");
+            }
         }
 
         private bool CanEditOrDeletePartner()

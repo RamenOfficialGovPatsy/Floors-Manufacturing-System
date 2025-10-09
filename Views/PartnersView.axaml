@@ -27,83 +27,41 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 
-                <Button Grid.Column="0" 
-                        Content="НАЗАД"
-                        FontFamily="Segoe UI"
-                        FontSize="14"
-                        FontWeight="SemiBold"
-                        Background="#F4E8D3"
-                        Foreground="#333333"
-                        BorderThickness="0"
-                        Padding="20,10"
-                        CornerRadius="4"
-                        Click="BackButton_Click"/>
+                <Button Grid.Column="0" Content="НАЗАД" Click="BackButton_Click" Background="#F4E8D3" Foreground="#333333"/>
                 
-                <TextBlock Grid.Column="0" Grid.ColumnSpan="2"
-                           Text="ПАРТНЕРЫ"
-                           FontFamily="Segoe UI"
-                           FontSize="28"
-                           FontWeight="Bold"
-                           Foreground="#333333"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Text="ПАРТНЕРЫ" FontSize="28" FontWeight="Bold" Foreground="#333333" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
             
-            <DataGrid ItemsSource="{Binding Partners}"
-                      SelectedItem="{Binding SelectedPartner}"
-                      AutoGenerateColumns="False"
-                      IsReadOnly="True"
-                      GridLinesVisibility="Horizontal"
-                      CanUserResizeColumns="True"
-                      BorderThickness="1"
-                      BorderBrush="#DDDDDD">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="НАИМЕНОВАНИЕ" Binding="{Binding Name}" Width="2*"/>
-                    <DataGridTextColumn Header="ИНН" Binding="{Binding Inn}" Width="1*"/>
-                    <DataGridTextColumn Header="ФИО ДИРЕКТОРА" Binding="{Binding DirectorName}" Width="2*"/>
-                    <DataGridTextColumn Header="ТЕЛЕФОН" Binding="{Binding Phone}" Width="1.5*"/>
-                    <DataGridTextColumn Header="EMAIL" Binding="{Binding Email}" Width="2*"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <Grid MinHeight="300">
+                <ProgressBar IsIndeterminate="True"
+                             IsVisible="{Binding IsLoading}"
+                             Width="200"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"/>
+                
+                <DataGrid ItemsSource="{Binding Partners}"
+                          SelectedItem="{Binding SelectedPartner}"
+                          IsVisible="{Binding !IsLoading}"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          GridLinesVisibility="Horizontal"
+                          CanUserResizeColumns="True"
+                          BorderThickness="1"
+                          BorderBrush="#DDDDDD">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="НАИМЕНОВАНИЕ" Binding="{Binding Name}" Width="2*"/>
+                        <DataGridTextColumn Header="ИНН" Binding="{Binding Inn}" Width="1*"/>
+                        <DataGridTextColumn Header="ФИО ДИРЕКТОРА" Binding="{Binding DirectorName}" Width="2*"/>
+                        <DataGridTextColumn Header="ТЕЛЕФОН" Binding="{Binding Phone}" Width="1.5*"/>
+                        <DataGridTextColumn Header="EMAIL" Binding="{Binding Email}" Width="2*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
             
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="20">
-                <Button Content="ДОБАВИТЬ ПАРТНЕРА"
-                        Command="{Binding AddPartnerCommand}"
-                        FontFamily="Segoe UI"
-                        FontSize="14"
-                        FontWeight="SemiBold"
-                        Background="#67BA80"
-                        Foreground="White"
-                        BorderThickness="0"
-                        Padding="30,12"
-                        CornerRadius="4"
-                        MinWidth="180"/>
-                
-                <Button Content="РЕДАКТИРОВАТЬ"
-                        Command="{Binding EditPartnerCommand}"
-                        CommandParameter="{Binding SelectedPartner}"
-                        FontFamily="Segoe UI"
-                        FontSize="14"
-                        FontWeight="SemiBold"
-                        Background="#F4E8D3"
-                        Foreground="White"
-                        BorderThickness="0"
-                        Padding="30,12"
-                        CornerRadius="4"
-                        MinWidth="180"/>
-                
-                <Button Content="УДАЛИТЬ"
-                        Command="{Binding DeletePartnerCommand}"
-                        CommandParameter="{Binding SelectedPartner}"
-                        FontFamily="Segoe UI"
-                        FontSize="14"
-                        FontWeight="SemiBold"
-                        Background="#F4E8D3"
-                        Foreground="White"
-                        BorderThickness="0"
-                        Padding="30,12"
-                        CornerRadius="4"
-                        MinWidth="180"/>
+                <Button Content="ДОБАВИТЬ ПАРТНЕРА" Command="{Binding AddPartnerCommand}" Background="#67BA80" Foreground="White"/>
+                <Button Content="РЕДАКТИРОВАТЬ" Command="{Binding EditPartnerCommand}" CommandParameter="{Binding SelectedPartner}" Background="#F4E8D3" Foreground="White"/>
+                <Button Content="УДАЛИТЬ" Command="{Binding DeletePartnerCommand}" CommandParameter="{Binding SelectedPartner}" Background="#F4E8D3" Foreground="White"/>
             </StackPanel>
             
         </StackPanel>
