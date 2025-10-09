@@ -13,21 +13,24 @@ namespace Master_Floor_Project.ViewModels
     {
         private readonly IPartnerService _partnerService;
 
-        [ObservableProperty]
-        private ObservableCollection<Partner> _partners;
-
-        [ObservableProperty]
-        [NotifyCanExecuteChangedFor(nameof(EditPartnerCommand))]
-        [NotifyCanExecuteChangedFor(nameof(DeletePartnerCommand))]
-        private Partner? _selectedPartner;
-
-        [ObservableProperty]
-        private bool _isLoading = true;
+        [ObservableProperty] private ObservableCollection<Partner> _partners;
+        [ObservableProperty][NotifyCanExecuteChangedFor(nameof(EditPartnerCommand))][NotifyCanExecuteChangedFor(nameof(DeletePartnerCommand))] private Partner? _selectedPartner;
+        [ObservableProperty] private bool _isLoading = true;
 
         public PartnersViewModel()
         {
             _partnerService = new PartnerService();
             Partners = new ObservableCollection<Partner>();
+
+            // Подписываемся на событие: когда партнер будет добавлен,
+            // вызовется метод OnPartnerAdded
+            EventAggregator.PartnerAdded += OnPartnerAdded;
+        }
+
+        // Этот метод будет вызван после добавления нового партнера
+        private async void OnPartnerAdded()
+        {
+            await LoadPartnersAsync();
         }
 
         public async Task LoadPartnersAsync()
@@ -55,25 +58,24 @@ namespace Master_Floor_Project.ViewModels
         [RelayCommand]
         private void AddPartner()
         {
-            NavigationService.ShowWindow<PartnerEditWindow>();
+            var editViewModel = new PartnerEditViewModel();
+            var editWindow = new PartnerEditWindow
+            {
+                DataContext = editViewModel
+            };
+            editWindow.Show();
         }
 
         [RelayCommand(CanExecute = nameof(CanEditOrDeletePartner))]
-        private void EditPartner(Partner? partner)
-        {
-            // TODO: Логика открытия окна редактирования
-        }
+        private void EditPartner(Partner? partner) { /* ... */ }
 
         [RelayCommand(CanExecute = nameof(CanEditOrDeletePartner))]
         private async Task DeletePartnerAsync(Partner? partner)
         {
             if (partner is null) return;
-
             try
             {
                 await _partnerService.DeletePartnerAsync(partner.PartnerId);
-                // ИЗМЕНЕНИЕ: Вместо удаления из коллекции, перезагружаем весь список.
-                // Это надежно обновит DataGrid и уберет пустую строку.
                 await LoadPartnersAsync();
             }
             catch (Exception ex)
@@ -82,9 +84,6 @@ namespace Master_Floor_Project.ViewModels
             }
         }
 
-        private bool CanEditOrDeletePartner()
-        {
-            return SelectedPartner != null;
-        }
+        private bool CanEditOrDeletePartner() => SelectedPartner != null;
     }
 }
