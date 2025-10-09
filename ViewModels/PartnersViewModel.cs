@@ -1,4 +1,3 @@
-// ViewModels/PartnersViewModel.cs
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Master_Floor_Project.Models;
@@ -21,14 +20,10 @@ namespace Master_Floor_Project.ViewModels
         {
             _partnerService = new PartnerService();
             Partners = new ObservableCollection<Partner>();
-
-            // Подписываемся на событие: когда партнер будет добавлен,
-            // вызовется метод OnPartnerAdded
-            EventAggregator.PartnerAdded += OnPartnerAdded;
+            EventAggregator.PartnersChanged += OnPartnersChanged;
         }
 
-        // Этот метод будет вызван после добавления нового партнера
-        private async void OnPartnerAdded()
+        private async void OnPartnersChanged()
         {
             await LoadPartnersAsync();
         }
@@ -59,15 +54,19 @@ namespace Master_Floor_Project.ViewModels
         private void AddPartner()
         {
             var editViewModel = new PartnerEditViewModel();
-            var editWindow = new PartnerEditWindow
-            {
-                DataContext = editViewModel
-            };
+            var editWindow = new PartnerEditWindow { DataContext = editViewModel };
             editWindow.Show();
         }
 
         [RelayCommand(CanExecute = nameof(CanEditOrDeletePartner))]
-        private void EditPartner(Partner? partner) { /* ... */ }
+        private void EditPartner(Partner? partner)
+        {
+            if (partner is null) return;
+            var editViewModel = new PartnerEditViewModel();
+            editViewModel.LoadPartner(partner);
+            var editWindow = new PartnerEditWindow { DataContext = editViewModel };
+            editWindow.Show();
+        }
 
         [RelayCommand(CanExecute = nameof(CanEditOrDeletePartner))]
         private async Task DeletePartnerAsync(Partner? partner)

@@ -1,11 +1,10 @@
-using System;
-using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.VisualTree; // <-- Этот using на месте
+using Avalonia.VisualTree;
 using Master_Floor_Project.ViewModels;
+using System.Linq;
 
 namespace Master_Floor_Project.Views
 {
@@ -19,17 +18,15 @@ namespace Master_Floor_Project.Views
 
         private async void PartnersView_Loaded(object? sender, RoutedEventArgs e)
         {
-            Console.WriteLine("2. Событие PartnersView_Loaded СРАБОТАЛО.");
             if (DataContext is PartnersViewModel viewModel)
             {
                 await viewModel.LoadPartnersAsync();
             }
-            else Console.WriteLine("ОШИБКА: DataContext не является PartnersViewModel!");
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            if (this.Parent is Window window)
+            if (this.GetVisualRoot() is Window window)
             {
                 window.Close();
             }
@@ -37,14 +34,8 @@ namespace Master_Floor_Project.Views
 
         private void DeselectDataGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
         {
-            // Используем IVisual
             if (e.Source is not Visual source) return;
-
-            // Используем SelfAndVisualAncestors
-            var isClickOnRow = source.GetSelfAndVisualAncestors()
-                .OfType<DataGridRow>()
-                .Any();
-
+            var isClickOnRow = source.GetSelfAndVisualAncestors().OfType<DataGridRow>().Any();
             if (!isClickOnRow && this.DataContext is PartnersViewModel viewModel)
             {
                 viewModel.SelectedPartner = null;

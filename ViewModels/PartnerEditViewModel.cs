@@ -1,10 +1,10 @@
-// ViewModels/PartnerEditViewModel.cs
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Master_Floor_Project.Models;
 using Master_Floor_Project.Services;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Master_Floor_Project.ViewModels
@@ -13,6 +13,7 @@ namespace Master_Floor_Project.ViewModels
     {
         private readonly IPartnerService _partnerService;
         public event Action? OnRequestClose;
+        private int? _editingPartnerId;
 
         [ObservableProperty]
         [Required(ErrorMessage = "Наименование компании обязательно")]
@@ -20,12 +21,22 @@ namespace Master_Floor_Project.ViewModels
         [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
         private string _name = "";
 
+        [ObservableProperty]
+        [RegularExpression(@"^(\d{10}|\d{12})$", ErrorMessage = "ИНН должен состоять из 10 или 12 цифр")]
+        [NotifyDataErrorInfo]
+        [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
+        private string? _inn;
+
+        [ObservableProperty]
+        [EmailAddress(ErrorMessage = "Некорректный формат Email адреса")]
+        [NotifyDataErrorInfo]
+        [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
+        private string? _email;
+
         [ObservableProperty] private string? _type;
         [ObservableProperty] private string? _address;
-        [ObservableProperty] private string? _inn;
         [ObservableProperty] private string? _directorName;
         [ObservableProperty] private string? _phone;
-        [ObservableProperty] private string? _email;
         [ObservableProperty] private string? _rating;
 
         public PartnerEditViewModel()
@@ -34,10 +45,20 @@ namespace Master_Floor_Project.ViewModels
             ValidateAllProperties();
         }
 
-        private bool CanSave()
+        public void LoadPartner(Partner partner)
         {
-            return !HasErrors;
+            _editingPartnerId = partner.PartnerId;
+            Name = partner.Name;
+            Type = partner.Type;
+            Address = partner.Address;
+            Inn = partner.Inn;
+            DirectorName = partner.DirectorName;
+            Phone = partner.Phone;
+            Email = partner.Email;
+            Rating = partner.Rating.HasValue ? new string('⭐', partner.Rating.Value) : null;
         }
+
+        private bool CanSave() => !HasErrors;
 
         [RelayCommand(CanExecute = nameof(CanSave))]
         private async Task SaveAsync()
@@ -47,15 +68,8 @@ namespace Master_Floor_Project.ViewModels
 
             try
             {
-                // ИЗМЕНЕНИЕ 1: Добавляем безопасную обработку рейтинга
-                int? partnerRating = null;
-                if (!string.IsNullOrEmpty(this.Rating))
-                {
-                    // Считаем количество символов '⭐'
-                    partnerRating = this.Rating.Length;
-                }
-
-                var newPartner = new Partner
+                int? partnerRating = !string.IsNullOrEmpty(this.Rating) ? this.Rating.Length : null;
+                var partner = new Partner
                 {
                     Name = this.Name,
                     Type = this.Type,
@@ -64,16 +78,24 @@ namespace Master_Floor_Project.ViewModels
                     DirectorName = this.DirectorName,
                     Phone = this.Phone,
                     Email = this.Email,
-                    Rating = partnerRating // ДОБАВЛЕНО: Сохраняем рейтинг
+                    Rating = partnerRating
                 };
 
-                await _partnerService.AddPartnerAsync(newPartner);
-                EventAggregator.PublishPartnerAdded();
+                if (_editingPartnerId.HasValue)
+                {
+                    partner.PartnerId = _editingPartnerId.Value;
+                    await _partnerService.UpdatePartnerAsync(partner);
+                }
+                else
+                {
+                    await _partnerService.AddPartnerAsync(partner);
+                }
+
+                EventAggregator.PublishPartnersChanged();
                 OnRequestClose?.Invoke();
             }
             catch (Exception ex)
             {
-                // ИЗМЕНЕНИЕ 2: Улучшаем логирование для будущих ошибок
                 Console.WriteLine($"Ошибка при сохранении партнера: {ex}");
             }
         }

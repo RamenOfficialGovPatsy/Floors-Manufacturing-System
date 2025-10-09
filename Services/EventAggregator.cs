@@ -5,11 +5,11 @@ namespace Master_Floor_Project.Services
 {
     public static class EventAggregator
     {
-        public static event Action? PartnerAdded;
+        public static event Action? PartnersChanged;
 
-        public static void PublishPartnerAdded()
+        public static void PublishPartnersChanged()
         {
-            PartnerAdded?.Invoke();
+            PartnersChanged?.Invoke();
         }
     }
 }

@@ -26,37 +26,29 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                
                 <Button Grid.Column="0" Content="НАЗАД" Click="BackButton_Click" Background="#F4E8D3" Foreground="#333333"/>
-                
                 <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Text="ПАРТНЕРЫ" FontSize="28" FontWeight="Bold" Foreground="#333333" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
             
-            <Grid MinHeight="300">
-                <ProgressBar IsIndeterminate="True"
-                             IsVisible="{Binding IsLoading}"
-                             Width="200"
-                             HorizontalAlignment="Center"
-                             VerticalAlignment="Center"/>
-                
-                <DataGrid ItemsSource="{Binding Partners}"
-                          SelectedItem="{Binding SelectedPartner}"
-                          IsVisible="{Binding !IsLoading}"
-                          AutoGenerateColumns="False"
-                          IsReadOnly="True"
-                          GridLinesVisibility="Horizontal"
-                          CanUserResizeColumns="True"
-                          BorderThickness="1"
-                          BorderBrush="#DDDDDD">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="НАИМЕНОВАНИЕ" Binding="{Binding Name}" Width="2*"/>
-                        <DataGridTextColumn Header="ИНН" Binding="{Binding Inn}" Width="1*"/>
-                        <DataGridTextColumn Header="ФИО ДИРЕКТОРА" Binding="{Binding DirectorName}" Width="2*"/>
-                        <DataGridTextColumn Header="ТЕЛЕФОН" Binding="{Binding Phone}" Width="1.5*"/>
-                        <DataGridTextColumn Header="EMAIL" Binding="{Binding Email}" Width="2*"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
+            <DataGrid ItemsSource="{Binding Partners}"
+                      SelectedItem="{Binding SelectedPartner}"
+                      IsVisible="{Binding !IsLoading}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      GridLinesVisibility="Horizontal"
+                      CanUserResizeColumns="True"
+                      BorderThickness="1"
+                      BorderBrush="#DDDDDD">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="НАИМЕНОВАНИЕ" Binding="{Binding Name}" Width="2*"/>
+                    <DataGridTextColumn Header="ИНН" Binding="{Binding Inn}" Width="1*"/>
+                    <DataGridTextColumn Header="ФИО ДИРЕКТОРА" Binding="{Binding DirectorName}" Width="2*"/>
+                    <DataGridTextColumn Header="ТЕЛЕФОН" Binding="{Binding Phone}" Width="1.5*"/>
+                    <DataGridTextColumn Header="EMAIL" Binding="{Binding Email}" Width="2*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsLoading}" Width="200" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="20">
                 <Button Content="ДОБАВИТЬ ПАРТНЕРА" Command="{Binding AddPartnerCommand}" Background="#67BA80" Foreground="White"/>
