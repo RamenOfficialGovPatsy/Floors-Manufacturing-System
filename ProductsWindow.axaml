@@ -1,12 +1,18 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:views="clr-namespace:Master_Floor_Project.Views"
+        xmlns:viewModels="clr-namespace:Master_Floor_Project.ViewModels"
         x:Class="Master_Floor_Project.ProductsWindow"
         Title="Продукция - Информационная система Мастер Пол"
-        Width="1000"
-        Height="600"
-        MinWidth="900"
-        MinHeight="500">
+        Width="1400"
+        Height="800"
+        MinWidth="1200"
+        MinHeight="600"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.DataContext>
+        <viewModels:ProductsViewModel/>
+    </Window.DataContext>
 
     <views:ProductsView/>
     

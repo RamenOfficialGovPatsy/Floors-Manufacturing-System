@@ -1,7 +1,9 @@
 using Master_Floor_Project.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Master_Floor_Project.Data
 {
@@ -11,6 +13,22 @@ namespace Master_Floor_Project.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Manager> Managers { get; set; }
         public DbSet<Application> Applications { get; set; }
+
+        public async Task TestConnectionAsync()
+        {
+            try
+            {
+                Debug.WriteLine("🟡 AppDbContext: Тестирование подключения к БД...");
+                var canConnect = await Database.CanConnectAsync();
+                Debug.WriteLine(canConnect
+            ? "🟢 AppDbContext: Подключение к БД успешно"
+            : "🔴 AppDbContext: Не удалось подключиться к БД");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"🔴 AppDbContext: Ошибка подключения: {ex.Message}");
+            }
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

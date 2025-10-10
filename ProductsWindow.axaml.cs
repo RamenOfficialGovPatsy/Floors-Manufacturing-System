@@ -1,5 +1,6 @@
 // ...С ЭТИМ ПРОСТРАНСТВОМ ИМЁН И ИМЕНЕМ КЛАССА
 using Avalonia.Controls;
+using Master_Floor_Project.ViewModels;
 
 namespace Master_Floor_Project
 {
@@ -8,6 +9,7 @@ namespace Master_Floor_Project
         public ProductsWindow()
         {
             InitializeComponent();
+            DataContext = new ProductsViewModel();
         }
     }
 }
