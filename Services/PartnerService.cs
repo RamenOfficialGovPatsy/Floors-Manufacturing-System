@@ -1,47 +1,76 @@
-// Services/PartnerService.cs
 using Master_Floor_Project.Data;
 using Master_Floor_Project.Models;
-using Master_Floor_Project.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using System;
 
 namespace Master_Floor_Project.Services
 {
     public class PartnerService : IPartnerService
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public PartnerService()
-        {
-            // В будущем здесь будет внедрение зависимостей (DI).
-            // Пока что создаем экземпляры напрямую.
-            _unitOfWork = new UnitOfWork(new AppDbContext());
-        }
-
         public async Task<IEnumerable<Partner>> GetPartnersAsync()
         {
-            return await _unitOfWork.Partners.GetAllAsync();
+            using var context = new AppDbContext();
+            return await context.Partners.ToListAsync();
         }
 
         public async Task AddPartnerAsync(Partner partner)
         {
-            await _unitOfWork.Partners.AddAsync(partner);
-            await _unitOfWork.CompleteAsync();
+            try
+            {
+                using var context = new AppDbContext();
+                context.Partners.Add(partner);
+                await context.SaveChangesAsync();
+                Debug.WriteLine($"🟢 PartnerService: Партнер {partner.Name} добавлен");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"🔴 PartnerService: Ошибка добавления: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task UpdatePartnerAsync(Partner partner)
         {
-            _unitOfWork.Partners.Update(partner);
-            await _unitOfWork.CompleteAsync();
+            try
+            {
+                using var context = new AppDbContext();
+                context.Partners.Update(partner);
+                await context.SaveChangesAsync();
+                Debug.WriteLine($"🟢 PartnerService: Партнер {partner.Name} обновлен");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"🔴 PartnerService: Ошибка обновления: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task DeletePartnerAsync(int partnerId)
         {
-            var partner = await _unitOfWork.Partners.GetByIdAsync(partnerId);
-            if (partner != null)
+            try
             {
-                _unitOfWork.Partners.Delete(partner);
-                await _unitOfWork.CompleteAsync();
+                using var context = new AppDbContext();
+
+                var partner = await context.Partners.FindAsync(partnerId);
+                if (partner != null)
+                {
+                    context.Partners.Remove(partner);
+                    await context.SaveChangesAsync();
+                    Debug.WriteLine($"🟢 PartnerService: Партнер {partnerId} удален");
+                }
+                else
+                {
+                    Debug.WriteLine($"🟡 PartnerService: Партнер {partnerId} не найден");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"🔴 PartnerService: Ошибка удаления партнера {partnerId}: {ex.Message}");
+                Debug.WriteLine($"🔴 PartnerService: Inner: {ex.InnerException?.Message}");
+                throw;
             }
         }
     }

@@ -25,7 +25,7 @@ namespace Master_Floor_Project.ViewModels
         {
             Debug.WriteLine("🟡 ProductsViewModel: Конструктор вызван");
 
-            _productService = new ProductService(new AppDbContext());
+            _productService = new ProductService();
             _ = TestDatabaseConnection();
         }
 

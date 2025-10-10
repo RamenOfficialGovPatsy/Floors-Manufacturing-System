@@ -13,6 +13,8 @@ namespace Master_Floor_Project.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Manager> Managers { get; set; }
         public DbSet<Application> Applications { get; set; }
+        // УДАЛИЛ: public DbSet<ApplicationItem> ApplicationItems { get; set; }
+        public DbSet<WarehouseItem> Warehouse { get; set; }
 
         public async Task TestConnectionAsync()
         {
@@ -21,8 +23,8 @@ namespace Master_Floor_Project.Data
                 Debug.WriteLine("🟡 AppDbContext: Тестирование подключения к БД...");
                 var canConnect = await Database.CanConnectAsync();
                 Debug.WriteLine(canConnect
-            ? "🟢 AppDbContext: Подключение к БД успешно"
-            : "🔴 AppDbContext: Не удалось подключиться к БД");
+                    ? "🟢 AppDbContext: Подключение к БД успешно"
+                    : "🔴 AppDbContext: Не удалось подключиться к БД");
             }
             catch (Exception ex)
             {
@@ -42,6 +44,21 @@ namespace Master_Floor_Project.Data
                     .LogTo(message => Debug.WriteLine(message), LogLevel.Information)
                     .EnableSensitiveDataLogging();
             }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // ТОЛЬКО WarehouseItem конфигурация
+            modelBuilder.Entity<WarehouseItem>(entity =>
+            {
+                entity.HasKey(w => w.WarehouseId);
+                entity.HasOne(w => w.Product)
+                      .WithMany()
+                      .HasForeignKey(w => w.ProductId)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
         }
     }
 }

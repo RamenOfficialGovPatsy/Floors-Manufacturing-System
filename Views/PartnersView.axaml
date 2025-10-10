@@ -19,18 +19,39 @@
     </UserControl.Styles>
 
     <Border Background="#FFFFFF" PointerPressed="DeselectDataGrid_OnPointerPressed">
-        <StackPanel Margin="40" Spacing="20">
+        <Grid RowDefinitions="Auto,*,Auto" Margin="20">
             
-            <Grid>
+            <!-- Верхняя панель с заголовком и кнопкой НАЗАД -->
+            <Grid Grid.Row="0" Margin="0,0,0,20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Content="НАЗАД" Click="BackButton_Click" Background="#F4E8D3" Foreground="#333333"/>
-                <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Text="ПАРТНЕРЫ" FontSize="28" FontWeight="Bold" Foreground="#333333" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                
+                <Button Grid.Column="0" 
+                        Content="НАЗАД" 
+                        Click="BackButton_Click" 
+                        Background="#F4E8D3" 
+                        Foreground="#333333"
+                        FontFamily="Segoe UI"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        BorderThickness="0"
+                        Padding="20,10"
+                        CornerRadius="4"/>
+                
+                <TextBlock Grid.Column="1" 
+                           Text="ПАРТНЕРЫ" 
+                           FontSize="28" 
+                           FontWeight="Bold" 
+                           Foreground="#333333" 
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center"/>
             </Grid>
             
-            <DataGrid ItemsSource="{Binding Partners}"
+            <!-- Основная таблица -->
+            <DataGrid Grid.Row="1"
+                      ItemsSource="{Binding Partners}"
                       SelectedItem="{Binding SelectedPartner}"
                       IsVisible="{Binding !IsLoading}"
                       AutoGenerateColumns="False"
@@ -38,24 +59,72 @@
                       GridLinesVisibility="Horizontal"
                       CanUserResizeColumns="True"
                       BorderThickness="1"
-                      BorderBrush="#DDDDDD">
+                      BorderBrush="#DDDDDD"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="НАИМЕНОВАНИЕ" Binding="{Binding Name}" Width="2*"/>
                     <DataGridTextColumn Header="ИНН" Binding="{Binding Inn}" Width="1*"/>
                     <DataGridTextColumn Header="ФИО ДИРЕКТОРА" Binding="{Binding DirectorName}" Width="2*"/>
                     <DataGridTextColumn Header="ТЕЛЕФОН" Binding="{Binding Phone}" Width="1.5*"/>
                     <DataGridTextColumn Header="EMAIL" Binding="{Binding Email}" Width="2*"/>
+                    <DataGridTextColumn Header="РЕЙТИНГ" Binding="{Binding Rating}" Width="1*"/>
                 </DataGrid.Columns>
             </DataGrid>
 
-            <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsLoading}" Width="200" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <!-- Индикатор загрузки -->
+            <ProgressBar Grid.Row="1"
+                        IsIndeterminate="True" 
+                        IsVisible="{Binding IsLoading}" 
+                        Width="200" 
+                        Height="4"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"/>
             
-            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="20">
-                <Button Content="ДОБАВИТЬ ПАРТНЕРА" Command="{Binding AddPartnerCommand}" Background="#67BA80" Foreground="White"/>
-                <Button Content="РЕДАКТИРОВАТЬ" Command="{Binding EditPartnerCommand}" CommandParameter="{Binding SelectedPartner}" Background="#F4E8D3" Foreground="White"/>
-                <Button Content="УДАЛИТЬ" Command="{Binding DeletePartnerCommand}" CommandParameter="{Binding SelectedPartner}" Background="#F4E8D3" Foreground="White"/>
-            </StackPanel>
+            <!-- Нижняя панель с кнопками действий - ВСЕГДА ВИДНА -->
+            <Border Grid.Row="2" 
+                    Background="#F8F8F8" 
+                    BorderThickness="0,1,0,0" 
+                    BorderBrush="#DDDDDD"
+                    Padding="20,15"
+                    Margin="0,20,0,0">
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="20">
+                    <Button Content="ДОБАВИТЬ ПАРТНЕРА" 
+                            Command="{Binding AddPartnerCommand}" 
+                            Background="#67BA80" 
+                            Foreground="White"
+                            FontFamily="Segoe UI"
+                            FontSize="14"
+                            FontWeight="SemiBold"
+                            BorderThickness="0"
+                            Padding="20,10"
+                            CornerRadius="4"/>
+                    
+                    <Button Content="РЕДАКТИРОВАТЬ" 
+                            Command="{Binding EditPartnerCommand}" 
+                            CommandParameter="{Binding SelectedPartner}" 
+                            Background="#F4E8D3" 
+                            Foreground="#333333"
+                            FontFamily="Segoe UI"
+                            FontSize="14"
+                            FontWeight="SemiBold"
+                            BorderThickness="0"
+                            Padding="20,10"
+                            CornerRadius="4"/>
+                    
+                    <Button Content="УДАЛИТЬ" 
+                            Command="{Binding DeletePartnerCommand}" 
+                            CommandParameter="{Binding SelectedPartner}" 
+                            Background="#F4E8D3" 
+                            Foreground="#333333"
+                            FontFamily="Segoe UI"
+                            FontSize="14"
+                            FontWeight="SemiBold"
+                            BorderThickness="0"
+                            Padding="20,10"
+                            CornerRadius="4"/>
+                </StackPanel>
+            </Border>
             
-        </StackPanel>
+        </Grid>
     </Border>
 </UserControl>

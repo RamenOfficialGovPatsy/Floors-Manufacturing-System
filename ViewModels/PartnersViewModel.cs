@@ -4,6 +4,7 @@ using Master_Floor_Project.Models;
 using Master_Floor_Project.Services;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Master_Floor_Project.ViewModels
@@ -80,6 +81,7 @@ namespace Master_Floor_Project.ViewModels
             catch (Exception ex)
             {
                 Console.WriteLine($"Ошибка при удалении партнера: {ex.Message}");
+                Debug.WriteLine($"Inner exception: {ex.InnerException?.Message}");
             }
         }
 
