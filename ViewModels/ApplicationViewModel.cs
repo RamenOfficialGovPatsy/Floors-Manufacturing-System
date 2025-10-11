@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Master_Floor_Project.Models;
 using Master_Floor_Project.Services; // Services пока не используются, можно закомментировать
+using Master_Floor_Project.Windows;
 
 namespace Master_Floor_Project.ViewModels
 {

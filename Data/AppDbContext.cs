@@ -13,7 +13,7 @@ namespace Master_Floor_Project.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Manager> Managers { get; set; }
         public DbSet<Application> Applications { get; set; }
-        // УДАЛИЛ: public DbSet<ApplicationItem> ApplicationItems { get; set; }
+        public DbSet<ApplicationItem> ApplicationItems { get; set; }
         public DbSet<WarehouseItem> Warehouse { get; set; }
 
         public async Task TestConnectionAsync()
@@ -50,7 +50,21 @@ namespace Master_Floor_Project.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // ТОЛЬКО WarehouseItem конфигурация
+            // Конфигурация для ApplicationItem
+            modelBuilder.Entity<ApplicationItem>(entity =>
+            {
+                entity.HasKey(ai => ai.ApplicationItemId);
+                entity.HasOne(ai => ai.Application)
+                      .WithMany(a => a.ApplicationItems)
+                      .HasForeignKey(ai => ai.ApplicationId)
+                      .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(ai => ai.Product)
+                      .WithMany()
+                      .HasForeignKey(ai => ai.ProductId)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // Конфигурация для WarehouseItem
             modelBuilder.Entity<WarehouseItem>(entity =>
             {
                 entity.HasKey(w => w.WarehouseId);

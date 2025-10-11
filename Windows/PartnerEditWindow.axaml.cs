@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Master_Floor_Project.ViewModels;
 using System; // Добавляем этот using
 
-namespace Master_Floor_Project
+namespace Master_Floor_Project.Windows
 {
     public partial class PartnerEditWindow : Window
     {

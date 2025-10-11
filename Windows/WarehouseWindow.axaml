@@ -1,7 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:views="clr-namespace:Master_Floor_Project.Views"
-        x:Class="Master_Floor_Project.WarehouseWindow"
+        x:Class="Master_Floor_Project.Windows.WarehouseWindow"
         Title="Склад - Информационная система Мастер Пол"
         Width="1400"
         Height="800"
