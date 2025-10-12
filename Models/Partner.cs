@@ -1,12 +1,13 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Master_Floor_Project.Models
 {
-    [Table("partners")] // Явно указываем имя таблицы
+    [Table("partners")]
     public class Partner
     {
-        [Key] // Указываем, что это первичный ключ
+        [Key]
         [Column("partner_id")]
         public int PartnerId { get; set; }
 
@@ -36,5 +37,8 @@ namespace Master_Floor_Project.Models
 
         [Column("rating")]
         public int? Rating { get; set; }
+
+        // ✅ Добавляем навигационное свойство для заявок
+        public virtual List<Application> Applications { get; set; } = new();
     }
 }

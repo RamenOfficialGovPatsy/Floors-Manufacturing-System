@@ -82,14 +82,27 @@ namespace Master_Floor_Project.Services
             try
             {
                 using var context = new AppDbContext();
-                // Используем Update, чтобы EF Core отследил изменения в статусе
-                context.Applications.Update(application);
-                await context.SaveChangesAsync();
-                Debug.WriteLine($"🟢 Заявка ID: {application.ApplicationId} успешно обновлена.");
+
+                // ✅ Находим существующую заявку
+                var existingApplication = await context.Applications
+                    .FirstOrDefaultAsync(a => a.ApplicationId == application.ApplicationId);
+
+                if (existingApplication != null)
+                {
+                    // ✅ Обновляем только статус, не трогая другие поля
+                    existingApplication.Status = application.Status;
+                    await context.SaveChangesAsync();
+                    Console.WriteLine($"🟢 Заявка ID: {application.ApplicationId} успешно обновлена. Новый статус: {application.Status}");
+                }
+                else
+                {
+                    Console.WriteLine($"🔴 Заявка ID: {application.ApplicationId} не найдена");
+                }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"🔴 UpdateApplicationAsync Error: {ex.Message}");
+                Console.WriteLine($"🔴 UpdateApplicationAsync Error: {ex.Message}");
+                Console.WriteLine($"🔴 Inner Exception: {ex.InnerException?.Message}");
                 throw;
             }
         }
@@ -99,30 +112,32 @@ namespace Master_Floor_Project.Services
             try
             {
                 using var context = new AppDbContext();
-                // Находим заявку вместе с ее позициями
+
+                // ✅ Находим заявку вместе с позициями
                 var applicationToDelete = await context.Applications
-                    .Include(a => a.ApplicationItems)
+                    .Include(a => a.ApplicationItems) // Загружаем связанные позиции
                     .FirstOrDefaultAsync(a => a.ApplicationId == applicationId);
 
                 if (applicationToDelete != null)
                 {
-                    Debug.WriteLine($"Найдены {applicationToDelete.ApplicationItems.Count} позиций для удаления.");
-                    // Сначала удаляем связанные позиции
-                    if (applicationToDelete.ApplicationItems.Any())
-                    {
-                        context.ApplicationItems.RemoveRange(applicationToDelete.ApplicationItems);
-                    }
+                    Console.WriteLine($"🔍 Найдена заявка: {applicationToDelete.ApplicationNumber}, позиций: {applicationToDelete.ApplicationItems.Count}");
 
-                    // Затем удаляем саму заявку
+                    // ✅ EF автоматически удалит позиции благодаря каскадному удалению
                     context.Applications.Remove(applicationToDelete);
-
                     await context.SaveChangesAsync();
-                    Debug.WriteLine($"🟢 Заявка ID: {applicationId} и ее позиции успешно удалены.");
+
+                    Console.WriteLine($"🟢 ApplicationService: Заявка {applicationToDelete.ApplicationNumber} (ID: {applicationId}) успешно удалена");
+                }
+                else
+                {
+                    Console.WriteLine($"🟡 ApplicationService: Заявка {applicationId} не найдена");
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"🔴 DeleteApplicationAsync Error: {ex.Message}");
+                Console.WriteLine($"🔴 DeleteApplicationAsync Error: {ex.Message}");
+                Console.WriteLine($"🔴 Inner Exception: {ex.InnerException?.Message}");
+                Console.WriteLine($"🔴 StackTrace: {ex.StackTrace}");
                 throw;
             }
         }
@@ -132,14 +147,32 @@ namespace Master_Floor_Project.Services
             try
             {
                 using var context = new AppDbContext();
-                return await context.ApplicationItems
+                Console.WriteLine($"🔍 ApplicationService: Ищем позиции для заявки ID: {applicationId}");
+
+                var items = await context.ApplicationItems
                     .Include(ai => ai.Product)
                     .Where(ai => ai.ApplicationId == applicationId)
                     .ToListAsync();
+
+                Console.WriteLine($"🔍 ApplicationService: Найдено {items.Count} позиций для заявки {applicationId}");
+
+                // Отладочная информация о каждой позиции
+                foreach (var item in items)
+                {
+                    Console.WriteLine($"🔍 Позиция: ItemId={item.ApplicationItemId}, ProductId={item.ProductId}, Quantity={item.Quantity}");
+                    Console.WriteLine($"🔍 Продукт: {(item.Product != null ? item.Product.Name : "NULL")}");
+                    if (item.Product != null)
+                    {
+                        Console.WriteLine($"🔍 Цена продукта: {item.Product.MinPricePartner}");
+                    }
+                }
+
+                return items;
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"🔴 GetApplicationItemsAsync Error: {ex.Message}");
+                Console.WriteLine($"🔴 GetApplicationItemsAsync Error: {ex.Message}");
+                Console.WriteLine($"🔴 StackTrace: {ex.StackTrace}");
                 throw;
             }
         }

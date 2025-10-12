@@ -1,10 +1,17 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:Master_Floor_Project.Converters"
              x:Class="Master_Floor_Project.Views.ApplicationsView">
+
+    <UserControl.Resources>
+        <converters:ObjectToBoolConverter x:Key="ObjectToBoolConverter"/>
+        <converters:ObjectToValueConverter x:Key="ObjectToValueConverter"/>
+    </UserControl.Resources>
     
     <UserControl.Styles>
         <Style Selector="DataGridColumnHeader">
             <Setter Property="Background" Value="#F4E8D3"/>
+            <Setter Property="Foreground" Value="#333333"/>
         </Style>
         <Style Selector="DataGridRow">
             <Setter Property="Background" Value="#F4E8D3"/>
@@ -23,7 +30,8 @@
                 <Button Grid.Column="0" 
                         Content="НАЗАД"
                         Click="BackButton_Click"
-                        Background="#F4E8D3" Foreground="#333333"/>
+                        Background="#F4E8D3" Foreground="#333333"
+                        Padding="20,10"/>
                 
                 <TextBlock Grid.Column="1" 
                            Text="ЗАЯВКИ"
@@ -31,30 +39,44 @@
                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
             
-            <DataGrid x:Name="ApplicationsDataGrid"
-                      ItemsSource="{Binding Applications}"
-                      AutoGenerateColumns="False"
-                      IsReadOnly="True"
-                      GridLinesVisibility="Horizontal"
-                      BorderThickness="1" BorderBrush="#DDDDDD">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="НОМЕР ЗАЯВКИ" Binding="{Binding ApplicationNumber}" Width="1.5*"/>
-                    <DataGridTextColumn Header="ПАРТНЕР" Binding="{Binding PartnerName}" Width="2*"/>
-                    <DataGridTextColumn Header="ДАТА" Binding="{Binding DateCreated, StringFormat='yyyy-MM-dd'}" Width="1.5*"/>
-                    <DataGridTextColumn Header="СТАТУС" Binding="{Binding Status}" Width="1.5*"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <!-- ✅ Обернули DataGrid в Border с фиксированной высотой и добавили ScrollViewer -->
+            <Border BorderThickness="1" BorderBrush="#DDDDDD" Height="400">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <DataGrid x:Name="ApplicationsDataGrid"
+                              ItemsSource="{Binding Applications}"
+                              SelectedItem="{Binding SelectedApplication}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              GridLinesVisibility="Horizontal">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="НОМЕР ЗАЯВКИ" Binding="{Binding ApplicationNumber}" Width="1.5*"/>
+                            <DataGridTextColumn Header="ПАРТНЕР" Binding="{Binding PartnerName}" Width="2*"/>
+                            <DataGridTextColumn Header="ДАТА" Binding="{Binding DateCreated, StringFormat='yyyy-MM-dd'}" Width="1.5*"/>
+                            <DataGridTextColumn Header="СТАТУС" Binding="{Binding Status}" Width="1.5*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </ScrollViewer>
+            </Border>
             
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="20">
                 <Button Content="СОЗДАТЬ ЗАЯВКУ"
                         Command="{Binding CreateApplicationCommand}"
-                        Background="#67BA80" Foreground="White"/>
+                        Background="#67BA80" Foreground="White"
+                        Padding="20,10"/>
                 
-                <Button Content="ПРОСМОТРЕТЬ"
-                        Background="#F4E8D3" Foreground="White"/>
+                <Button Content="РЕДАКТИРОВАТЬ ЗАЯВКУ"
+                        Command="{Binding EditApplicationCommand}"
+                        IsEnabled="{Binding SelectedApplication, Converter={StaticResource ObjectToBoolConverter}}"
+                        Background="{Binding SelectedApplication, Converter={StaticResource ObjectToValueConverter}, ConverterParameter='#67BA80|#CCCCCC'}"
+                        Foreground="White"
+                        Padding="20,10"/>
                 
-                <Button Content="РЕДАКТИРОВАТЬ"
-                        Background="#F4E8D3" Foreground="White"/>
+                <Button Content="УДАЛИТЬ ЗАЯВКУ"
+                        Command="{Binding DeleteApplicationCommand}"
+                        IsEnabled="{Binding SelectedApplication, Converter={StaticResource ObjectToBoolConverter}}"
+                        Background="{Binding SelectedApplication, Converter={StaticResource ObjectToValueConverter}, ConverterParameter='#F4E8D3|#CCCCCC'}"
+                        Foreground="White"
+                        Padding="20,10"/>
             </StackPanel>
         
         </StackPanel>

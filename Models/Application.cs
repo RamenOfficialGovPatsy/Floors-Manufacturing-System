@@ -34,17 +34,6 @@ namespace Master_Floor_Project.Models
         public string ApplicationNumber => $"Z-{DateCreated:yyyy}-{ApplicationId:D3}";
 
         [NotMapped]
-        public string PartnerName => Partner?.Name ?? GetPartnerName(PartnerId);
-
-        private string GetPartnerName(int partnerID)
-        {
-            return partnerID switch
-            {
-                1 => "ООО \"Вектор\"",
-                2 => "ООО \"Стройка\"",
-                3 => "ИП Сидоров",
-                _ => "Неизвестный партнер"
-            };
-        }
+        public string PartnerName => Partner?.Name ?? "Неизвестный партнер"; // ✅ Убрали хардкод
     }
 }

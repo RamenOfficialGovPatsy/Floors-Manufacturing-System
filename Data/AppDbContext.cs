@@ -15,6 +15,7 @@ namespace Master_Floor_Project.Data
         public DbSet<Application> Applications { get; set; }
         public DbSet<ApplicationItem> ApplicationItems { get; set; }
         public DbSet<WarehouseItem> Warehouse { get; set; }
+        public DbSet<SalesHistory> SalesHistory { get; set; }
 
         public async Task TestConnectionAsync()
         {
@@ -49,6 +50,16 @@ namespace Master_Floor_Project.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // ✅ Конфигурация для Partner
+            //  modelBuilder.Entity<Partner>(entity =>
+            //  {
+            //  entity.HasKey(p => p.PartnerId);
+            //  entity.HasMany(p => p.Applications)
+            // .WithOne(a => a.Partner)
+            //.HasForeignKey(a => a.PartnerId)
+            // .OnDelete(DeleteBehavior.Cascade); // Каскадное удаление заявок при удалении партнера
+            // });
 
             // Конфигурация для ApplicationItem
             modelBuilder.Entity<ApplicationItem>(entity =>
