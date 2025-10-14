@@ -4,11 +4,11 @@
         xmlns:viewModels="clr-namespace:Master_Floor_Project.ViewModels"
         x:Class="Master_Floor_Project.Windows.ProductsWindow"
         Title="Продукция - Информационная система Мастер Пол"
-        Width="1400"
-        Height="800"
-        MinWidth="1200"
-        MinHeight="600"
-        WindowStartupLocation="CenterScreen">
+        Width="1400" Height="700"
+        MinWidth="1200" MinHeight="600"
+        MaxWidth="1600" MaxHeight="1200"
+        WindowStartupLocation="CenterOwner" CanResize="True"
+        ShowInTaskbar="True" WindowState="Normal" SizeToContent="Manual">
 
     <Window.DataContext>
         <viewModels:ProductsViewModel/>

@@ -6,10 +6,11 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Master_Floor_Project.MainWindow"
         Title="Информационная система Мастер Пол"
-        Width="1200"
-        Height="800"
-        MinWidth="1000"
-        MinHeight="700"
+        Width="1400" Height="900"
+        MinWidth="1200" MinHeight="800"
+        MaxWidth="2000" MaxHeight="1400"
+        WindowStartupLocation="CenterScreen" CanResize="True"
+        ShowInTaskbar="True" WindowState="Normal" SizeToContent="Manual"
         d:DataContext="{d:DesignInstance vm:MainWindowViewModel, IsDesignTimeCreatable=False}">
     
     <Border Classes="main-bg">

@@ -8,7 +8,20 @@ namespace Master_Floor_Project.Windows
         public CreateApplicationWindow()
         {
             InitializeComponent();
-            DataContext = new CreateApplicationViewModel();
+        }
+
+        public CreateApplicationWindow(CreateApplicationViewModel viewModel)
+        {
+            InitializeComponent();
+            DataContext = viewModel;
+
+            this.Opened += (s, e) =>
+            {
+                if (DataContext is CreateApplicationViewModel vm)
+                {
+                    vm.CurrentWindow = this;
+                }
+            };
         }
     }
 }

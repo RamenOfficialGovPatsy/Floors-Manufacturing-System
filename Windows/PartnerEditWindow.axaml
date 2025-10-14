@@ -3,10 +3,11 @@
         xmlns:views="clr-namespace:Master_Floor_Project.Views"
         x:Class="Master_Floor_Project.Windows.PartnerEditWindow"
         Title="Добавление партнера - Информационная система Мастер Пол"
-        Width="650"
-        Height="750"
-        MinWidth="600"
-        MinHeight="700">
+        Width="700" Height="700"
+        MinWidth="650" MinHeight="650"
+        MaxWidth="800" MaxHeight="800"
+        WindowStartupLocation="CenterOwner" CanResize="False"
+        ShowInTaskbar="False" WindowState="Normal" SizeToContent="Manual">
     
     <views:PartnerEditView/>
     

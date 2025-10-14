@@ -15,9 +15,27 @@ namespace Master_Floor_Project.Services
             where T : Window, new()
             where TViewModel : class
         {
-            var window = new T();
-            window.DataContext = viewModel;
-            window.Show();
+            try
+            {
+                var constructor = typeof(T).GetConstructor(new[] { typeof(TViewModel) });
+                Window window;
+
+                if (constructor != null)
+                {
+                    window = (Window)constructor.Invoke(new object[] { viewModel });
+                }
+                else
+                {
+                    window = new T();
+                    window.DataContext = viewModel;
+                }
+                window.Show();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ NavigationService Error: {ex.Message}");
+                throw;
+            }
         }
     }
 }

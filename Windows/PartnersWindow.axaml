@@ -7,10 +7,11 @@
         mc:Ignorable="d" d:DesignWidth="1300" d:DesignHeight="800"
         x:Class="Master_Floor_Project.Windows.PartnersWindow"
         Title="Партнеры - Информационная система Мастер Пол"
-        Width="1300"
-        Height="800"
-        MinWidth="1200"
-        MinHeight="700"
+        Width="1600" Height="900"
+        MinWidth="1400" MinHeight="800"
+        MaxWidth="2200" MaxHeight="1600"
+        WindowStartupLocation="CenterOwner" CanResize="True"
+        ShowInTaskbar="True" WindowState="Normal" SizeToContent="Manual"
         d:DataContext="{d:DesignInstance vm:PartnersViewModel, IsDesignTimeCreatable=False}">
     
     <views:PartnersView/>

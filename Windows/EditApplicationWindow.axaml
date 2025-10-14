@@ -2,9 +2,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="Master_Floor_Project.Windows.EditApplicationWindow"
         Title="Редактирование заявки"
-        Width="800"
-        Height="600"
-        WindowStartupLocation="CenterOwner">
+        Width="800" Height="600"
+        MinWidth="700" MinHeight="500"
+        MaxWidth="1000" MaxHeight="800"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False" ShowInTaskbar="False"
+        WindowState="Normal" SizeToContent="Manual">
     
     <Window.Styles>
         <Style Selector="TextBlock.header">
@@ -21,8 +24,23 @@
         
         <Style Selector="Button.secondary">
             <Setter Property="Background" Value="#F4E8D3"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Foreground" Value="#333333"/>
             <Setter Property="Padding" Value="20,10"/>
+        </Style>
+
+        <!-- ✅ ДОБАВЛЯЕМ СТИЛИ ДЛЯ DATAGRID -->
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="Background" Value="#F4E8D3"/>
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        
+        <Style Selector="DataGridRow">
+            <Setter Property="Background" Value="#F4E8D3"/>
+        </Style>
+        
+        <Style Selector="DataGridRow:even">
+            <Setter Property="Background" Value="#F9F1E6"/>
         </Style>
     </Window.Styles>
 
@@ -60,7 +78,8 @@
                         <DataGrid ItemsSource="{Binding ApplicationItems}"
                                   AutoGenerateColumns="False"
                                   IsReadOnly="True"
-                                  GridLinesVisibility="Horizontal">
+                                  GridLinesVisibility="Horizontal"
+                                  Background="#F4E8D3"> <!-- ✅ ДОБАВЛЯЕМ БЕЖЕВЫЙ ФОН -->
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Продукт" Binding="{Binding ProductName}" Width="2*"/>
                                 <DataGridTextColumn Header="Количество" Binding="{Binding Quantity}" Width="1*"/>
@@ -80,7 +99,8 @@
                 
                 <Button Content="ОТМЕНА" 
                         Classes="secondary"
-                        Command="{Binding CancelCommand}"/>
+                        Command="{Binding CancelCommand}"
+                        Foreground="White"/>
             </StackPanel>
             
         </StackPanel>

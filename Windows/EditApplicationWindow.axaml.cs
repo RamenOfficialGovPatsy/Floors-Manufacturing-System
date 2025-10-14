@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
 using Master_Floor_Project.ViewModels;
 
 namespace Master_Floor_Project.Windows
@@ -8,15 +9,25 @@ namespace Master_Floor_Project.Windows
         public EditApplicationWindow()
         {
             InitializeComponent();
+        }
 
-            // ✅ Устанавливаем ссылку на окно в ViewModel
+        public EditApplicationWindow(EditApplicationViewModel viewModel)
+        {
+            InitializeComponent();
+            DataContext = viewModel;
+
             this.Opened += (s, e) =>
             {
-                if (DataContext is EditApplicationViewModel viewModel)
+                if (DataContext is EditApplicationViewModel vm)
                 {
-                    viewModel.CurrentWindow = this;
+                    vm.CurrentWindow = this;
                 }
             };
+        }
+
+        private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
         }
     }
 }

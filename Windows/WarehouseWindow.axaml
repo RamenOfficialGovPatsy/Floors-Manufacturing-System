@@ -3,11 +3,11 @@
         xmlns:views="clr-namespace:Master_Floor_Project.Views"
         x:Class="Master_Floor_Project.Windows.WarehouseWindow"
         Title="Склад - Информационная система Мастер Пол"
-        Width="1400"
-        Height="800"
-        MinWidth="1200"
-        MinHeight="600"
-        WindowStartupLocation="CenterScreen">
+        Width="1000" Height="700"
+        MinWidth="900" MinHeight="600"
+        MaxWidth="1200" MaxHeight="900"
+        WindowStartupLocation="CenterOwner" CanResize="True"
+        ShowInTaskbar="True" WindowState="Normal" SizeToContent="Manual">
 
     <views:WarehouseView/>
     

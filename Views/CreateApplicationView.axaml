@@ -1,6 +1,12 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:Master_Floor_Project.Converters"
              x:Class="Master_Floor_Project.Views.CreateApplicationView">
+    
+    <UserControl.Resources>
+        <converters:ObjectToBoolConverter x:Key="ObjectToBoolConverter"/>
+        <converters:ValidationToBorderBrushConverter x:Key="ValidationToBorderBrushConverter"/>
+    </UserControl.Resources>
     
     <UserControl.Styles>
         <Style Selector="DataGridColumnHeader">
@@ -23,7 +29,8 @@
                 <Button Grid.Column="0" 
                         Content="НАЗАД"
                         Click="BackButton_Click"
-                        Background="#F4E8D3" Foreground="#333333"/>
+                        Background="#F4E8D3" Foreground="#333333"
+                        Padding="20,10"/>
                 
                 <TextBlock Grid.Column="1" 
                            Text="СОЗДАНИЕ ЗАЯВКИ"
@@ -38,19 +45,30 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="ВЫБЕРИТЕ ПАРТНЕРА" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    <!-- ✅ Используем BorderBrush для подсветки ошибки -->
                     <ComboBox Grid.Column="1" 
                               ItemsSource="{Binding AllPartners}"
+                              SelectedItem="{Binding SelectedPartner}"
                               DisplayMemberBinding="{Binding Name}"
                               PlaceholderText="Выберите партнера..." 
-                              Margin="20,0,0,0"/>
+                              Margin="20,0,0,0"
+                              BorderBrush="{Binding PartnerValidationError, Converter={StaticResource ValidationToBorderBrushConverter}}"/>
                 </Grid>
+                
+                <!-- ✅ Отображение ошибки валидации партнера -->
+                <TextBlock Text="{Binding PartnerValidationError}"
+                           Foreground="Red"
+                           FontSize="12"
+                           Margin="220,5,0,0"
+                           IsVisible="{Binding PartnerValidationError, Converter={StaticResource ObjectToBoolConverter}}"/>
+                
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="ДАТА ЗАЯВКИ" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Column="1" Text="2025-10-06" Margin="20,0,0,0" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="{Binding DateCreated, StringFormat='{}{0:dd.MM.yyyy}'}" Margin="20,0,0,0" VerticalAlignment="Center"/>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -58,7 +76,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="СТАТУС" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Column="1" Text="Новая" Margin="20,0,0,0" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="Черновик" Margin="20,0,0,0" VerticalAlignment="Center"/>
                 </Grid>
             </StackPanel>
 
@@ -67,7 +85,10 @@
                       AutoGenerateColumns="False"
                       IsReadOnly="True"
                       GridLinesVisibility="Horizontal"
-                      BorderThickness="1" BorderBrush="#DDDDDD">
+                      BorderThickness="1" BorderBrush="#DDDDDD"
+                      Height="200"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto">
+
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ПРОДУКЦИЯ" Binding="{Binding ProductName}" Width="2*"/>
                     <DataGridTextColumn Header="КОЛ-ВО" Binding="{Binding Quantity}" Width="1*"/>
@@ -86,9 +107,23 @@
             </StackPanel>
             
             <StackPanel Orientation="Horizontal" Spacing="15" HorizontalAlignment="Right" Margin="0,10,0,0">
-                <Button Content="ДОБАВИТЬ ПРОДУКЦИЮ" Command="{Binding AddProductCommand}" Background="#F4E8D3" Foreground="White"/>
-                <Button Content="СОХРАНИТЬ ЗАЯВКУ" Command="{Binding SaveApplicationCommand}" Background="#67BA80" Foreground="White"/>
-                <Button Content="ОТМЕНА" Command="{Binding CancelCommand}" Background="#67BA80" Foreground="White"/>
+                <Button Content="ДОБАВИТЬ ПРОДУКЦИЮ" 
+                        Command="{Binding AddProductCommand}" 
+                        Background="#67BA80" 
+                        Foreground="White"
+                        Padding="20,10"/>
+                
+                <Button Content="СОХРАНИТЬ ЗАЯВКУ" 
+                        Command="{Binding SaveApplicationCommand}" 
+                        Background="#67BA80" 
+                        Foreground="White"
+                        Padding="20,10"/>
+                
+                <Button Content="ОТМЕНА" 
+                        Command="{Binding CancelCommand}" 
+                        Background="#F4E8D3" 
+                        Foreground="White"
+                        Padding="20,10"/>
             </StackPanel>
             
         </StackPanel>

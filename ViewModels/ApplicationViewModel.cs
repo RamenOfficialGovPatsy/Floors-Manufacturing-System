@@ -35,7 +35,7 @@ namespace Master_Floor_Project.ViewModels
             CreateApplicationCommand = new RelayCommand(() =>
             {
                 Console.WriteLine("Кнопка СОЗДАТЬ ЗАЯВКУ нажата");
-                NavigationService.ShowWindow<CreateApplicationWindow>();
+                ShowCreateWindow();
             });
 
             RefreshApplicationsCommand = new RelayCommand(async () => await LoadApplicationsAsync());
@@ -84,6 +84,21 @@ namespace Master_Floor_Project.ViewModels
             });
 
             NavigationService.ShowWindow<EditApplicationWindow, EditApplicationViewModel>(editViewModel);
+        }
+
+        private void ShowCreateWindow()
+        {
+            Console.WriteLine("Кнопка СОЗДАТЬ ЗАЯВКУ нажата");
+
+            var createViewModel = new CreateApplicationViewModel();
+            createViewModel.OnApplicationCreated += () =>
+            {
+                // ✅ Этот код выполнится после создания заявки
+                Console.WriteLine("🔄 Обновляем список заявок после создания...");
+                _ = LoadApplicationsAsync(); // Перезагружаем список
+            };
+
+            NavigationService.ShowWindow<CreateApplicationWindow, CreateApplicationViewModel>(createViewModel);
         }
 
         private async Task DeleteApplicationAsync(Application application)

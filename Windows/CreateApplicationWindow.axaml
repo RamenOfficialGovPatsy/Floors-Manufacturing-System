@@ -3,10 +3,11 @@
         xmlns:views="clr-namespace:Master_Floor_Project.Views"
         x:Class="Master_Floor_Project.Windows.CreateApplicationWindow"
         Title="Создание заявки - Информационная система Мастер Пол"
-        Width="800"
-        Height="700"
-        MinWidth="700"
-        MinHeight="600">
+        Width="950" Height="800"
+        MinWidth="950" MinHeight="800"
+        MaxWidth="950" MaxHeight="800"
+        CanResize="False" WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False" WindowState="Normal" SizeToContent="Manual">
 
     <views:CreateApplicationView/>
     

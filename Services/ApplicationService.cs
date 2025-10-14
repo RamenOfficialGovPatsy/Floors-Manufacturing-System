@@ -44,6 +44,7 @@ namespace Master_Floor_Project.Services
             }
         }
 
+        // Services/ApplicationService.cs - исправленный метод AddApplicationAsync
         public async Task AddApplicationAsync(Application application, List<ApplicationItem> items)
         {
             try
@@ -52,12 +53,21 @@ namespace Master_Floor_Project.Services
                 using var transaction = await context.Database.BeginTransactionAsync();
                 try
                 {
+                    // ✅ Добавляем только заявку, без продуктов
                     context.Applications.Add(application);
                     await context.SaveChangesAsync();
 
                     foreach (var item in items)
                     {
                         item.ApplicationId = application.ApplicationId;
+
+                        // ✅ Используем существующий продукт из БД, не создаем новый
+                        var existingProduct = await context.Products.FindAsync(item.ProductId);
+                        if (existingProduct != null)
+                        {
+                            item.Product = existingProduct; // Присваиваем отслеживаемую сущность
+                        }
+
                         context.ApplicationItems.Add(item);
                     }
                     await context.SaveChangesAsync();
