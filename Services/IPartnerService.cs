@@ -6,9 +6,9 @@ namespace Master_Floor_Project.Services
 {
     public interface IPartnerService
     {
-        Task<IEnumerable<Partner>> GetPartnersAsync();
-        Task AddPartnerAsync(Partner partner);
-        Task UpdatePartnerAsync(Partner partner);
-        Task DeletePartnerAsync(int partnerId);
+        Task<IEnumerable<Partner>> GetPartnersAsync(); // Получение всех партнеров
+        Task AddPartnerAsync(Partner partner); // Добавление нового партнера
+        Task UpdatePartnerAsync(Partner partner); // Обновление данных партнера
+        Task DeletePartnerAsync(int partnerId); // Удаление партнера по ID
     }
 }

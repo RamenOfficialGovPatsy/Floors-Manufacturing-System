@@ -5,21 +5,20 @@ namespace Master_Floor_Project
 {
     internal class Program
     {
-        // Точка входа в приложение. Этот метод остается без изменений.
         [STAThread]
         public static void Main(string[] args) => BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);
 
-        // Конфигурация Avalonia. Вот где должен быть ваш код.
+        // Конфигурация Avalonia приложения с кроссплатформенными настройками
         public static AppBuilder BuildAvaloniaApp()
         {
-            // Мы возвращаем сконфигурированный AppBuilder
+            // Конфигурация и возврат AppBuilder для запуска приложения
             return AppBuilder.Configure<App>()
-                .UsePlatformDetect()
-                .WithInterFont()
-                .LogToTrace()
-                .UseX11()       // <-- Строка для стабильности на Linux
-                .UseSkia();     // <-- Вторая строка для стабильности на Linux
+                .UsePlatformDetect() // Автоопределение платформы
+                .WithInterFont() // Шрифт Inter
+                .LogToTrace() // Логирование в трассировку
+                .UseX11()       // Поддержка X11 для Linux
+                .UseSkia();     // Графический бэкенд Skia для кроссплатформенности
         }
     }
 }

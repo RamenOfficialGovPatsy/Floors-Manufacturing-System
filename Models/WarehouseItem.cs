@@ -8,15 +8,15 @@ namespace Master_Floor_Project.Models
     {
         [Key]
         [Column("warehouse_id")]
-        public int WarehouseId { get; set; }
+        public int WarehouseId { get; set; } // Уникальный идентификатор записи склада
 
         [Column("product_id")]
-        public int ProductId { get; set; }
+        public int ProductId { get; set; } // ID продукта на складе
 
         [ForeignKey("ProductId")]
-        public Product Product { get; set; } = null!;
+        public Product Product { get; set; } = null!; // Навигационное свойство к продукту
 
         [Column("quantity_on_hand")]
-        public int QuantityOnHand { get; set; }
+        public int QuantityOnHand { get; set; } // Количество товара на складе
     }
 }

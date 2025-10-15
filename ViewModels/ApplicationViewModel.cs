@@ -12,40 +12,43 @@ namespace Master_Floor_Project.ViewModels
 {
     public partial class ApplicationViewModel : ViewModelBase
     {
+        // Сервис для работы с заявками
         private readonly IApplicationService _applicationService;
 
         [ObservableProperty]
-        private ObservableCollection<Application> _applications = new();
+        private ObservableCollection<Application> _applications = new(); // Коллекция заявок для отображения
 
         [ObservableProperty]
-        private bool _isLoading = true;
+        private bool _isLoading = true; // Флаг загрузки данных
 
         [ObservableProperty]
-        private Application? _selectedApplication;
+        private Application? _selectedApplication; // Выбранная заявка в списке
 
-        public ICommand CreateApplicationCommand { get; }
-        public ICommand RefreshApplicationsCommand { get; }
-        public ICommand EditApplicationCommand { get; }
-        public ICommand DeleteApplicationCommand { get; }
+        public ICommand CreateApplicationCommand { get; } // Команда создания новой заявки
+        public ICommand RefreshApplicationsCommand { get; } // Команда обновления списка заявок
+        public ICommand EditApplicationCommand { get; } // Команда редактирования заявки
+        public ICommand DeleteApplicationCommand { get; } // Команда удаления заявки
 
         public ApplicationViewModel()
         {
             _applicationService = new ApplicationService();
 
+            // Инициализация команды создания заявки
             CreateApplicationCommand = new RelayCommand(() =>
             {
                 Console.WriteLine("Кнопка СОЗДАТЬ ЗАЯВКУ нажата");
                 ShowCreateWindow();
             });
 
+            // Инициализация команды обновления списка
             RefreshApplicationsCommand = new RelayCommand(async () => await LoadApplicationsAsync());
 
+            // Инициализация команды редактирования заявки
             EditApplicationCommand = new RelayCommand(() =>
             {
                 if (SelectedApplication != null)
                 {
                     Console.WriteLine($"Редактирование заявки ID: {SelectedApplication.ApplicationId}");
-                    // TODO: Открыть окно редактирования заявки
                     ShowEditWindow(SelectedApplication);
                 }
                 else
@@ -54,6 +57,7 @@ namespace Master_Floor_Project.ViewModels
                 }
             });
 
+            // Инициализация команды удаления заявки
             DeleteApplicationCommand = new RelayCommand(async () =>
             {
                 if (SelectedApplication != null)
@@ -71,14 +75,15 @@ namespace Master_Floor_Project.ViewModels
             _ = LoadApplicationsAsync();
         }
 
+        // Открытие окна редактирования заявки
         private void ShowEditWindow(Application application)
         {
             Console.WriteLine($"Открытие редактирования заявки {application.ApplicationNumber}");
 
-            // ✅ Создаем ViewModel с callback для обновления списка
+            // Создаем ViewModel с callback для обновления списка
             var editViewModel = new EditApplicationViewModel(application, onApplicationUpdated: () =>
             {
-                // ✅ Этот код выполнится после сохранения заявки
+                // Этот код выполнится после сохранения заявки
                 Console.WriteLine("🔄 Обновляем список заявок после редактирования...");
                 _ = LoadApplicationsAsync(); // Перезагружаем список
             });
@@ -86,6 +91,7 @@ namespace Master_Floor_Project.ViewModels
             NavigationService.ShowWindow<EditApplicationWindow, EditApplicationViewModel>(editViewModel);
         }
 
+        // Открытие окна создания новой заявки
         private void ShowCreateWindow()
         {
             Console.WriteLine("Кнопка СОЗДАТЬ ЗАЯВКУ нажата");
@@ -93,7 +99,7 @@ namespace Master_Floor_Project.ViewModels
             var createViewModel = new CreateApplicationViewModel();
             createViewModel.OnApplicationCreated += () =>
             {
-                // ✅ Этот код выполнится после создания заявки
+                // Этот код выполнится после создания заявки
                 Console.WriteLine("🔄 Обновляем список заявок после создания...");
                 _ = LoadApplicationsAsync(); // Перезагружаем список
             };
@@ -101,6 +107,7 @@ namespace Master_Floor_Project.ViewModels
             NavigationService.ShowWindow<CreateApplicationWindow, CreateApplicationViewModel>(createViewModel);
         }
 
+        // Удаление выбранной заявки
         private async Task DeleteApplicationAsync(Application application)
         {
             try
@@ -117,27 +124,28 @@ namespace Master_Floor_Project.ViewModels
             }
         }
 
+        // Загрузка списка заявок из базы данных
         private async Task LoadApplicationsAsync()
         {
             try
             {
-                IsLoading = true;
-                Applications.Clear();
+                IsLoading = true; // Включение индикатора загрузки
+                Applications.Clear(); // Очистка текущего списка
 
+                // Получение заявок из БД
                 var applications = await _applicationService.GetApplicationsAsync();
                 foreach (var application in applications)
                 {
-                    Applications.Add(application);
+                    Applications.Add(application); // Добавление заявок в коллекцию
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Ошибка загрузки заявок: {ex.Message}");
-                // Можно добавить заглушки или сообщение об ошибке
             }
             finally
             {
-                IsLoading = false;
+                IsLoading = false; // Выключение индикатора загрузки
             }
         }
     }

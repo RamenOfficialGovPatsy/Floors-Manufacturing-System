@@ -9,36 +9,36 @@ namespace Master_Floor_Project.Models
     {
         [Key]
         [Column("partner_id")]
-        public int PartnerId { get; set; }
+        public int PartnerId { get; set; } // Уникальный идентификатор партнера
 
         [Column("type")]
-        public string? Type { get; set; }
+        public string? Type { get; set; } // Тип партнера (ИП, ООО, ЗАО и т.д.)
 
         [Column("name")]
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty; // Наименование компании партнера
 
         [Column("address")]
-        public string? Address { get; set; }
+        public string? Address { get; set; } // Юридический адрес партнера
 
         [Column("inn")]
-        public string Inn { get; set; } = string.Empty;
+        public string Inn { get; set; } = string.Empty; // ИНН партнера
 
         [Column("director_name")]
-        public string? DirectorName { get; set; }
+        public string? DirectorName { get; set; } // ФИО директора компании
 
         [Column("phone")]
-        public string? Phone { get; set; }
+        public string? Phone { get; set; } // Контактный телефон
 
         [Column("email")]
-        public string? Email { get; set; }
+        public string? Email { get; set; } // Email для связи
 
         [Column("logo_path")]
-        public string? LogoPath { get; set; }
+        public string? LogoPath { get; set; } // Путь к файлу логотипа
 
         [Column("rating")]
-        public int? Rating { get; set; }
+        public int? Rating { get; set; } // Рейтинг партнера (от 1 до 5)
 
-        // ✅ Добавляем навигационное свойство для заявок
+        // Список заявок партнера
         public virtual List<Application> Applications { get; set; } = new();
     }
 }

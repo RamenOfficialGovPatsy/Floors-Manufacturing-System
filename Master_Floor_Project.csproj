@@ -22,7 +22,7 @@
     <PackageReference Include="Npgsql" Version="9.0.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
     <PackageReference Include="ReactiveUI" Version="22.0.1" />
-    <!-- Убрали Avalonia.Themes.Fluent -->
+    
   </ItemGroup>
 
   <ItemGroup>

@@ -1,5 +1,4 @@
 using System.Collections.ObjectModel;
-using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Master_Floor_Project.Models;
@@ -12,18 +11,18 @@ namespace Master_Floor_Project.ViewModels
 {
     public partial class EditApplicationViewModel : ViewModelBase
     {
-        private readonly IApplicationService _applicationService;
-        private readonly Application _application;
-        private readonly Action? _onApplicationUpdated; // ✅ Callback для обновления списка
+        private readonly IApplicationService _applicationService; // Сервис работы с заявками
+        private readonly Application _application; // Редактируемая заявка
+        private readonly Action? _onApplicationUpdated; // Callback для обновления списка
 
         [ObservableProperty]
-        private ObservableCollection<ApplicationItem> _applicationItems = new();
+        private ObservableCollection<ApplicationItem> _applicationItems = new(); // Позиции заявки
 
         [ObservableProperty]
-        private string? _selectedStatus;
+        private string? _selectedStatus; // Выбранный статус заявки
 
         [ObservableProperty]
-        private ObservableCollection<string> _availableStatuses = new()
+        private ObservableCollection<string> _availableStatuses = new() // Доступные статусы
         {
             "Черновик",
             "В обработке",
@@ -34,50 +33,52 @@ namespace Master_Floor_Project.ViewModels
         };
 
         [ObservableProperty]
-        private string _applicationNumber = "Неизвестно";
+        private string _applicationNumber = "Неизвестно"; // Номер заявки
 
         [ObservableProperty]
-        private string _partnerName = "Неизвестно";
+        private string _partnerName = "Неизвестно"; // Наименование партнера
 
         [ObservableProperty]
-        private DateTime _dateCreated = DateTime.Now;
+        private DateTime _dateCreated = DateTime.Now; // Дата создания
 
-        public IRelayCommand SaveCommand { get; }
-        public IRelayCommand CancelCommand { get; }
+        public IRelayCommand SaveCommand { get; } // Команда сохранения изменений
+        public IRelayCommand CancelCommand { get; }  // Команда отмены редактировани
 
-        public Window? CurrentWindow { get; set; }
+        public Window? CurrentWindow { get; set; } // Ссылка на текущее окно
 
-        // ✅ Добавляем callback в конструктор
         public EditApplicationViewModel(Application application, Action? onApplicationUpdated = null)
         {
             _application = application;
             _applicationService = new ApplicationService();
-            _onApplicationUpdated = onApplicationUpdated; // ✅ Сохраняем callback
+            _onApplicationUpdated = onApplicationUpdated;
 
+            // Инициализация свойств данными из заявки
             ApplicationNumber = application.ApplicationNumber;
             PartnerName = application.PartnerName;
             DateCreated = application.DateCreated;
             SelectedStatus = application.Status;
 
+            // Команда сохранения
             SaveCommand = new RelayCommand(async () => await SaveAsync());
-            CancelCommand = new RelayCommand(() => Cancel());
+            CancelCommand = new RelayCommand(() => Cancel()); // Команда отмены
 
-            LoadApplicationItems();
+            LoadApplicationItems(); // Загрузка позиций заявки
         }
 
+        // Загрузка позиций (продуктов) заявки
         private async void LoadApplicationItems()
         {
             try
             {
                 var items = await _applicationService.GetApplicationItemsAsync(_application.ApplicationId);
-                ApplicationItems.Clear();
+                ApplicationItems.Clear(); // Очистка текущего списка
 
                 foreach (var item in items)
                 {
                     if (item.Product != null)
                     {
-                        item.ProductName = item.Product.Name;
-                        item.Price = item.Product.MinPricePartner ?? 0;
+                        item.ProductName = item.Product.Name; // Установка имени продукта
+                        item.Price = item.Product.MinPricePartner ?? 0; // Установка цены
                     }
                     else
                     {
@@ -85,7 +86,7 @@ namespace Master_Floor_Project.ViewModels
                         item.Price = 0;
                     }
 
-                    ApplicationItems.Add(item);
+                    ApplicationItems.Add(item); // Добавление позиции в коллекцию
                 }
 
                 Console.WriteLine($"✅ Загружено {ApplicationItems.Count} позиций заявки");
@@ -96,20 +97,21 @@ namespace Master_Floor_Project.ViewModels
             }
         }
 
+        // Сохранение изменений заявки
         private async Task SaveAsync()
         {
             try
             {
                 if (!string.IsNullOrEmpty(SelectedStatus))
                 {
-                    _application.Status = SelectedStatus;
-                    await _applicationService.UpdateApplicationAsync(_application);
+                    _application.Status = SelectedStatus; // Обновление статуса
+                    await _applicationService.UpdateApplicationAsync(_application); // Сохранение в БД
                     Console.WriteLine($"✅ Заявка {ApplicationNumber} обновлена. Новый статус: {SelectedStatus}");
 
-                    // ✅ Вызываем callback для обновления списка заявок
+                    // Вызываем callback для обновления списка заявок
                     _onApplicationUpdated?.Invoke();
 
-                    CloseWindow();
+                    CloseWindow(); // Закрытие окна
                 }
             }
             catch (Exception ex)
@@ -118,12 +120,14 @@ namespace Master_Floor_Project.ViewModels
             }
         }
 
+        // Отмена редактирования
         private void Cancel()
         {
             Console.WriteLine("❌ Редактирование отменено");
             CloseWindow();
         }
 
+        // Закрытие окна редактирования
         private void CloseWindow()
         {
             CurrentWindow?.Close();

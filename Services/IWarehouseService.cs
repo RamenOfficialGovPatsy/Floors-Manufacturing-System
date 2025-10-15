@@ -6,6 +6,7 @@ namespace Master_Floor_Project.Services
 {
     public interface IWarehouseService
     {
+        // Получение всех складских остатков
         Task<List<WarehouseItem>> GetWarehouseItemsAsync();
     }
 }

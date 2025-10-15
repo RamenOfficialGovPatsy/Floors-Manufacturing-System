@@ -6,54 +6,57 @@ using Master_Floor_Project.Models;
 using Master_Floor_Project.Services;
 using Master_Floor_Project.Windows;
 using System;
-using System.Threading.Tasks;
 using Avalonia.Controls;
 
 namespace Master_Floor_Project.ViewModels
 {
     public partial class CreateApplicationViewModel : ViewModelBase
     {
-        private readonly IDiscountService _discountService;
-        private readonly IPartnerService _partnerService;
-        private readonly IProductService _productService;
-        private readonly IApplicationService _applicationService;
+        private readonly IDiscountService _discountService; // Сервис расчета скидок
+        private readonly IPartnerService _partnerService; // Сервис работы с партнерами
+        private readonly IProductService _productService; // Сервис работы с продуктами
+        private readonly IApplicationService _applicationService; // Сервис работы с заявками
 
         [ObservableProperty]
-        private decimal _subTotal;
+        private decimal _subTotal; // Общая сумма заявки без скидки
 
         [ObservableProperty]
-        private decimal _discountPercentage;
+        private decimal _discountPercentage; // Процент скидки
 
         [ObservableProperty]
-        private decimal _finalTotal;
+        private decimal _finalTotal; // Итоговая сумма со скидкой
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(PartnerValidationError))]
         [NotifyCanExecuteChangedFor(nameof(SaveApplicationCommand))]
-        private Partner? _selectedPartner;
+        private Partner? _selectedPartner; // Выбранный партнер для заявки
 
         [ObservableProperty]
-        private DateTime _dateCreated = DateTime.Now;
+        private DateTime _dateCreated = DateTime.Now; // Дата создания заявки
 
         [ObservableProperty]
-        private bool _isLoading = true;
+        private bool _isLoading = true; // Флаг загрузки данных
 
-        // ✅ Добавляем свойство для ошибки валидации партнера
         [ObservableProperty]
-        private string? _partnerValidationError;
+        private string? _partnerValidationError; // Сообщение об ошибке валидации партнера
 
-        public Window? CurrentWindow { get; set; }
+        public Window? CurrentWindow { get; set; } // Ссылка на текущее окно
 
+        // Список всех партнеров
         public ObservableCollection<Partner> AllPartners { get; set; } = new();
+
+        // Список всех продуктов
         public ObservableCollection<Product> AllProducts { get; set; } = new();
+
+        // Позиции текущей заявки
         public ObservableCollection<ApplicationItem> Items { get; set; } = new();
 
+        // Событие успешного создания заявки
         public event Action? OnApplicationCreated;
 
-        // ✅ Добавляем команды
-        public IRelayCommand SaveApplicationCommand { get; }
-        public IRelayCommand AddProductCommand { get; }
-        public IRelayCommand CancelCommand { get; }
+        public IRelayCommand SaveApplicationCommand { get; } // Команда сохранения заявки
+        public IRelayCommand AddProductCommand { get; } // Команда добавления продукта
+        public IRelayCommand CancelCommand { get; } // Команда отмены создания
 
         public CreateApplicationViewModel()
         {
@@ -62,34 +65,36 @@ namespace Master_Floor_Project.ViewModels
             _productService = new ProductService();
             _applicationService = new ApplicationService();
 
-            // ✅ Инициализируем ВСЕ команды
+            // Инициализация команд с проверкой возможности выполнения
             SaveApplicationCommand = new RelayCommand(() => SaveApplicationToDatabase(), () => CanSaveApplication());
             AddProductCommand = new RelayCommand(() => AddProduct());
             CancelCommand = new RelayCommand(() => Cancel());
 
-            LoadInitialData();
+            LoadInitialData(); // Загрузка начальных данных
         }
 
-        // ✅ Метод проверки возможности сохранения
+        // Проверка возможности сохранения заявки
         private bool CanSaveApplication()
         {
             ValidatePartner();
-            return SelectedPartner != null && Items.Any();
+            return SelectedPartner != null && Items.Any(); // Партнер выбран и есть позиции
         }
 
-        // ✅ Валидация партнера
+        // Валидация выбора партнера
         private void ValidatePartner()
         {
             PartnerValidationError = SelectedPartner == null ? "Необходимо выбрать партнера" : null;
         }
 
+        // Обработчик изменения выбранного партнера
         partial void OnSelectedPartnerChanged(Partner? value)
         {
-            // ✅ Автоматически валидируем при изменении выбора партнера
+            // Автоматически валидируем при изменении выбора партнера
             ValidatePartner();
-            SaveApplicationCommand.NotifyCanExecuteChanged();
+            SaveApplicationCommand.NotifyCanExecuteChanged(); // Обновление состояния команды
         }
 
+        // Загрузка начальных данных (партнеры и продукты)
         private async void LoadInitialData()
         {
             try
@@ -97,7 +102,7 @@ namespace Master_Floor_Project.ViewModels
                 IsLoading = true;
                 Console.WriteLine("🟡 Начинаем загрузку данных для создания заявки...");
 
-                // ✅ Загружаем реальных партнеров из БД
+                // Загрузка списка партнеров из базы данных
                 var partners = await _partnerService.GetPartnersAsync();
                 AllPartners.Clear();
                 foreach (var partner in partners)
@@ -106,7 +111,7 @@ namespace Master_Floor_Project.ViewModels
                 }
                 Console.WriteLine($"✅ Загружено {AllPartners.Count} партнеров");
 
-                // ✅ Загружаем реальные продукты из БД
+                // Загрузка списка продуктов из базы данных
                 var products = await _productService.GetProductsAsync();
                 AllProducts.Clear();
                 foreach (var product in products)
@@ -115,10 +120,10 @@ namespace Master_Floor_Project.ViewModels
                 }
                 Console.WriteLine($"✅ Загружено {AllProducts.Count} продуктов");
 
-                Items.Clear();
+                Items.Clear(); // Очистка позиций заявки
                 Console.WriteLine("✅ Таблица продуктов заявки очищена");
 
-                CalculateTotals();
+                CalculateTotals(); // Расчет начальных сумм
             }
             catch (Exception ex)
             {
@@ -132,30 +137,34 @@ namespace Master_Floor_Project.ViewModels
             }
         }
 
+        // Расчет итоговых сумм заявки
         private void CalculateTotals()
         {
-            SubTotal = Items.Sum(item => item.Sum);
-            DiscountPercentage = _discountService.CalculateDiscount(SubTotal);
-            FinalTotal = SubTotal * (1 - DiscountPercentage);
+            SubTotal = Items.Sum(item => item.Sum); // Сумма без скидки
+            DiscountPercentage = _discountService.CalculateDiscount(SubTotal); // Расчет скидки
+            FinalTotal = SubTotal * (1 - DiscountPercentage); // Итоговая сумма со скидкой
 
-            // ✅ Обновляем состояние кнопки сохранения при изменении продуктов
+            // Обновление состояния кнопки сохранения
             SaveApplicationCommand.NotifyCanExecuteChanged();
 
             Console.WriteLine($"💰 Расчет сумм: SubTotal={SubTotal}, Discount={DiscountPercentage:P0}, Final={FinalTotal}");
         }
 
+        // Добавление продукта в заявку
         private void AddProduct()
         {
             Console.WriteLine("➕ Открываем окно выбора продукта...");
             ShowProductSelectionWindow();
         }
 
+        // Отмена создания заявки
         private void Cancel()
         {
             Console.WriteLine("❌ Отмена создания заявки...");
             CloseWindow();
         }
 
+        // Открытие окна выбора продукции
         private void ShowProductSelectionWindow()
         {
             var selectionViewModel = new ProductSelectionViewModel();
@@ -164,16 +173,18 @@ namespace Master_Floor_Project.ViewModels
                 DataContext = selectionViewModel
             };
 
-            // Подписываемся на события выбора
+            // Подписка на событие выбора продукта
             selectionViewModel.ProductSelected += (product, quantity) =>
             {
                 if (product != null)
                 {
+                    // Добавление выбранного продукта
                     AddProductToApplication(product, quantity);
                 }
                 window.Close();
             };
 
+            // Подписка на событие отмены выбора
             selectionViewModel.SelectionCancelled += () =>
             {
                 window.Close();
@@ -182,6 +193,7 @@ namespace Master_Floor_Project.ViewModels
             window.Show();
         }
 
+        // Добавление продукта в коллекцию позиций заявки
         private void AddProductToApplication(Product product, int quantity)
         {
             // Проверяем, не добавлен ли уже этот продукт
@@ -195,7 +207,7 @@ namespace Master_Floor_Project.ViewModels
             }
             else
             {
-                // Добавляем новый продукт
+                // Создание новой позиции заявки
                 var newItem = new ApplicationItem
                 {
                     ProductId = product.ProductId,
@@ -205,14 +217,15 @@ namespace Master_Floor_Project.ViewModels
                     Quantity = quantity
                 };
 
-                Items.Add(newItem);
+                Items.Add(newItem); // Добавление новой позиции
                 Console.WriteLine($"🆕 Добавлен продукт: {product.Name}, количество: {quantity}, цена: {newItem.Price}");
             }
 
-            // Пересчитываем суммы и обновляем состояние кнопки
+            // Пересчет сумм после добавления продукта
             CalculateTotals();
         }
 
+        // Сохранение заявки в базу данных
         private async void SaveApplicationToDatabase()
         {
             if (!CanSaveApplication())
@@ -227,19 +240,21 @@ namespace Master_Floor_Project.ViewModels
                 Console.WriteLine($"🔍 Партнер: {SelectedPartner!.Name} (ID: {SelectedPartner.PartnerId})");
                 Console.WriteLine($"🔍 Продуктов в заявке: {Items.Count}");
 
+                // Создание объекта заявки
                 var application = new Application
                 {
                     PartnerId = SelectedPartner.PartnerId,
-                    ManagerId = 1,
+                    ManagerId = 1, // ID менеджера по умолчанию
                     DateCreated = DateTime.UtcNow,
                     Status = "Черновик"
                 };
 
+                // Сохранение в БД
                 await _applicationService.AddApplicationAsync(application, Items.ToList());
                 Console.WriteLine($"✅ Заявка успешно создана: {application.ApplicationNumber}");
 
-                OnApplicationCreated?.Invoke();
-                CloseWindow();
+                OnApplicationCreated?.Invoke(); // Вызов события успешного создания
+                CloseWindow(); // Закрытие окна
             }
             catch (Exception ex)
             {
@@ -247,6 +262,7 @@ namespace Master_Floor_Project.ViewModels
             }
         }
 
+        // Закрытие текущего окна
         private void CloseWindow()
         {
             CurrentWindow?.Close();

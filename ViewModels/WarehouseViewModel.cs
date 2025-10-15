@@ -11,20 +11,21 @@ namespace Master_Floor_Project.ViewModels
 {
     public partial class WarehouseViewModel : ViewModelBase
     {
+        // Сервис для работы со складом
         private readonly IWarehouseService _warehouseService;
 
         [ObservableProperty]
-        private ObservableCollection<WarehouseItem> _warehouseItems = new();
+        private ObservableCollection<WarehouseItem> _warehouseItems = new(); // Коллекция складских остатков
 
         [ObservableProperty]
-        private bool _isLoading;
+        private bool _isLoading; // Флаг загрузки данных
 
         public WarehouseViewModel()
         {
             try
             {
                 Debug.WriteLine("🟡 WarehouseViewModel: Инициализация...");
-                _warehouseService = new WarehouseService(); // УБРАЛ параметр
+                _warehouseService = new WarehouseService(); // Создание сервиса для работы со складом
                 Debug.WriteLine("🟢 WarehouseViewModel: Сервис инициализирован");
             }
             catch (Exception ex)
@@ -34,21 +35,25 @@ namespace Master_Floor_Project.ViewModels
             }
         }
 
+        // Команда загрузки данных о складских остатках
         [RelayCommand]
         public async Task LoadWarehouseDataAsync()
         {
             try
             {
                 Debug.WriteLine("🟡 WarehouseViewModel: Начало загрузки данных");
-                IsLoading = true;
-                WarehouseItems.Clear();
+                IsLoading = true; // Включение индикатора загрузки
+                WarehouseItems.Clear(); // Очистка текущего списка остатков
 
+                // Получение данных из БД
                 var items = await _warehouseService.GetWarehouseItemsAsync();
 
+                // Проверка что данные получены
                 if (items != null && items.Count > 0)
                 {
                     foreach (var item in items)
                     {
+                        // Добавление остатков в коллекцию
                         WarehouseItems.Add(item);
                     }
                     Debug.WriteLine($"🟢 WarehouseViewModel: Загружено {WarehouseItems.Count} записей");
@@ -64,7 +69,7 @@ namespace Master_Floor_Project.ViewModels
             }
             finally
             {
-                IsLoading = false;
+                IsLoading = false; // Выключение индикатора загрузки
                 Debug.WriteLine("🟡 WarehouseViewModel: Загрузка завершена");
             }
         }

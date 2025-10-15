@@ -8,12 +8,12 @@ namespace Master_Floor_Project.Models
     {
         [Key]
         [Column("manager_id")]
-        public int ManagerId { get; set; }
+        public int ManagerId { get; set; } // Уникальный идентификатор менеджера
 
         [Column("full_name")]
-        public string FullName { get; set; } = string.Empty;
+        public string FullName { get; set; } = string.Empty; // Полное имя менеджера
 
         [Column("email")]
-        public string Email { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty; // Email менеджера для связи
     }
 }

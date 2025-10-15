@@ -11,12 +11,14 @@ namespace Master_Floor_Project.Services
 {
     public class PartnerService : IPartnerService
     {
+        // Получение списка всех партнеров
         public async Task<IEnumerable<Partner>> GetPartnersAsync()
         {
             using var context = new AppDbContext();
             return await context.Partners.ToListAsync();
         }
 
+        // Добавление нового партнера в базу данных
         public async Task AddPartnerAsync(Partner partner)
         {
             try
@@ -33,6 +35,7 @@ namespace Master_Floor_Project.Services
             }
         }
 
+        // Обновление данных существующего партнера
         public async Task UpdatePartnerAsync(Partner partner)
         {
             try
@@ -49,23 +52,24 @@ namespace Master_Floor_Project.Services
             }
         }
 
+        // Удаление партнера и всех связанных данных (заявки, история продаж)
         public async Task DeletePartnerAsync(int partnerId)
         {
             try
             {
                 using var context = new AppDbContext();
 
-                // ✅ Находим партнера со ВСЕМИ связанными данными
+                // Находим партнера со ВСЕМИ связанными данными
                 var partner = await context.Partners
-                    .Include(p => p.Applications)
-                        .ThenInclude(a => a.ApplicationItems)
+                    .Include(p => p.Applications) // Загружаем все заявки партнера
+                        .ThenInclude(a => a.ApplicationItems) // Загружаем позиции заявок
                     .FirstOrDefaultAsync(p => p.PartnerId == partnerId);
 
                 if (partner != null)
                 {
-                    Console.WriteLine($"🔍 Найден партнер: {partner.Name}, заявок: {partner.Applications.Count}");
+                    Debug.WriteLine($"🔍 Найден партнер: {partner.Name}, заявок: {partner.Applications.Count}");
 
-                    // 1. ✅ Удаляем историю продаж
+                    // 1 Удаляем историю продаж
                     var salesHistory = await context.SalesHistory
                         .Where(sh => sh.PartnerId == partnerId)
                         .ToListAsync();
@@ -73,39 +77,39 @@ namespace Master_Floor_Project.Services
                     if (salesHistory.Any())
                     {
                         context.SalesHistory.RemoveRange(salesHistory);
-                        Console.WriteLine($"🗑️ Удалено {salesHistory.Count} записей истории продаж");
+                        Debug.WriteLine($"🗑️ Удалено {salesHistory.Count} записей истории продаж");
                     }
 
-                    // 2. ✅ Удаляем заявки и их позиции
+                    // 2 Удаляем заявки и их позиции
                     foreach (var application in partner.Applications)
                     {
-                        Console.WriteLine($"🔍 Обрабатываем заявку {application.ApplicationId}, позиций: {application.ApplicationItems.Count}");
+                        Debug.WriteLine($"🔍 Обрабатываем заявку {application.ApplicationId}, позиций: {application.ApplicationItems.Count}");
 
                         if (application.ApplicationItems.Any())
                         {
                             context.ApplicationItems.RemoveRange(application.ApplicationItems);
-                            Console.WriteLine($"🗑️ Удалено {application.ApplicationItems.Count} позиций заявки");
+                            Debug.WriteLine($"🗑️ Удалено {application.ApplicationItems.Count} позиций заявки");
                         }
 
                         context.Applications.Remove(application);
-                        Console.WriteLine($"🗑️ Удалена заявка {application.ApplicationId}");
+                        Debug.WriteLine($"🗑️ Удалена заявка {application.ApplicationId}");
                     }
 
-                    // 3. ✅ Удаляем партнера
+                    // 3  Удаление всех заявок партнера и их позиций
                     context.Partners.Remove(partner);
                     await context.SaveChangesAsync();
 
-                    Console.WriteLine($"🟢 PartnerService: Партнер {partner.Name} (ID: {partnerId}) успешно удален");
+                    Debug.WriteLine($"🟢 PartnerService: Партнер {partner.Name} (ID: {partnerId}) успешно удален");
                 }
                 else
                 {
-                    Console.WriteLine($"🟡 PartnerService: Партнер {partnerId} не найден");
+                    Debug.WriteLine($"🟡 PartnerService: Партнер {partnerId} не найден");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"🔴 PartnerService: Ошибка удаления партнера {partnerId}: {ex.Message}");
-                Console.WriteLine($"🔴 PartnerService: Inner: {ex.InnerException?.Message}");
+                Debug.WriteLine($"🔴 PartnerService: Ошибка удаления партнера {partnerId}: {ex.Message}");
+                Debug.WriteLine($"🔴 PartnerService: Inner: {ex.InnerException?.Message}");
                 throw;
             }
         }
